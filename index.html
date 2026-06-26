@@ -330,6 +330,71 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+        /* --- Action Network Form Overrides --- */
+        
+        /* Make the overall form use our clean font */
+        #can-form-area {
+            font-family: var(--font-sans) !important;
+            color: var(--strato-blue) !important;
+            text-align: left !important;
+        }
+
+        /* Style the input fields (Name, Email, Zip) */
+        #can-form-area input[type="text"],
+        #can-form-area input[type="email"],
+        #can-form-area input[type="tel"],
+        #can-form-area select {
+            font-family: var(--font-sans) !important;
+            border: 2px solid var(--strato-blue) !important;
+            border-radius: 2px !important;
+            padding: 12px 15px !important;
+            background-color: var(--white) !important;
+            color: var(--strato-blue) !important;
+            font-size: 1rem !important;
+            margin-bottom: 15px !important;
+        }
+
+        /* Style the submit button to match our .btn-blue class */
+        #can-form-area input[type="submit"], 
+        #can-form-area .button {
+            background-color: var(--strato-blue) !important;
+            color: var(--white) !important;
+            border: 2px solid var(--strato-blue) !important;
+            font-family: var(--font-sans) !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.5px !important;
+            border-radius: 2px !important;
+            padding: 14px 28px !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            margin-top: 15px !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
+        /* Button Hover effect */
+        #can-form-area input[type="submit"]:hover, 
+        #can-form-area .button:hover {
+            background-color: transparent !important;
+            color: var(--strato-blue) !important;
+        }
+
+        /* Style the labels and checkboxes */
+        #can-form-area label {
+            font-weight: 600 !important;
+            color: var(--strato-blue) !important;
+            margin-bottom: 5px !important;
+        }
+        
+        #can-form-area .control-label {
+            font-family: var(--font-head) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            font-size: 1.2rem !important;
+            margin-top: 15px !important;
+        }
     </style>
 </head>
 <body>
