@@ -313,6 +313,97 @@
 </header>
 
 <!-- Graphic is now safely OUTSIDE the header -->
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;800&display=swap');
+
+    .ms-graphic-container {
+        background-color: #0A1429;
+        border: 4px solid #1A2E5A;
+        padding: 40px 30px;
+        max-width: 600px;
+        margin: 40px auto;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 8px 8px 0px #E31818;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .ms-graphic-container::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: radial-gradient(#1A2E5A 15%, transparent 16%);
+        background-size: 20px 20px;
+        opacity: 0.3;
+        z-index: 0;
+    }
+
+    .ms-eyebrow {
+        position: relative;
+        z-index: 1;
+        background-color: #FCD116;
+        color: #0A1429;
+        display: inline-block;
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        transform: rotate(-2deg);
+    }
+
+    .ms-headline {
+        position: relative;
+        z-index: 1;
+        font-family: 'Anton', sans-serif;
+        color: #FFFFFF;
+        font-size: 48px;
+        line-height: 1.05;
+        text-transform: uppercase;
+        margin: 0 0 20px 0;
+        text-shadow: 3px 3px 0px #000000;
+    }
+
+    .ms-highlight {
+        color: #E31818;
+    }
+
+    .ms-body {
+        position: relative;
+        z-index: 1;
+        color: #E2E8F0;
+        font-size: 18px;
+        line-height: 1.5;
+        font-weight: 600;
+        margin-bottom: 30px;
+        border-left: 4px solid #FCD116;
+        padding-left: 15px;
+    }
+
+    .ms-cta-btn {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        background-color: #E31818;
+        color: #FFFFFF;
+        font-family: 'Anton', sans-serif;
+        font-size: 22px;
+        text-decoration: none;
+        padding: 12px 24px;
+        text-transform: uppercase;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .ms-cta-btn:hover {
+        background-color: #C11212;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 480px) {
+        .ms-headline { font-size: 38px; }
+    }
+</style>
 <div class="ms-graphic-container">
     <div class="ms-eyebrow">The Extreme Record</div>
     <h2 class="ms-headline">YAKYM VOTES AGAINST <br><span class="ms-highlight">HOOSIER FAMILIES.</span></h2>
