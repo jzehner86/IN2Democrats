@@ -97,6 +97,16 @@ a {
     color: var(--rust-belt);
 }
 
+.btn-outline {
+    background-color: transparent;
+    color: var(--strato-blue);
+    border-color: var(--strato-blue);
+}
+.btn-outline:hover {
+    background-color: var(--strato-blue);
+    color: var(--white);
+}
+
 /* ---- Top Alert Bar ---- */
 .top-bar {
     background-color: var(--rust-belt);

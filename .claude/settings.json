@@ -4,7 +4,13 @@
       "Bash(git reset *)",
       "Bash(git stash *)",
       "Bash(git fetch *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(find \"c:/Users/joshy/code/IN2Democrats\" -not -path \"*/\\\\.git/*\" | sort)",
+      "Read(//c/Users/joshy/code/IN2Democrats/*/.git/**)",
+      "PowerShell(winget --version)",
+      "PowerShell(python --version 2>$null)",
+      "PowerShell(pip --version 2>$null)",
+      "PowerShell(choco --version 2>$null)"
     ]
   }
 }

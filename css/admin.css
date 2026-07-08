@@ -1,0 +1,265 @@
+/* ---------------------------------------------------------------
+   IN-02 DEMS — Admin Page Styles
+   Uses the shared design system from css/styles.css
+---------------------------------------------------------------- */
+
+body {
+    background: #f4f4f4;
+    color: var(--strato-blue);
+    font-family: var(--font-sans);
+}
+
+/* ------ Layout ------------------------------------------------ */
+
+.admin-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+}
+
+/* ------ Auth gate --------------------------------------------- */
+
+.auth-gate {
+    max-width: 400px;
+    margin: 6rem auto;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: center;
+}
+
+.auth-gate h1 {
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-gate p {
+    color: #555;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.auth-gate input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.auth-gate input:focus {
+    outline: none;
+    border-color: var(--strato-blue);
+}
+
+.auth-error {
+    color: var(--rust-belt);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+    min-height: 1.2em;
+}
+
+/* ------ Admin header ------------------------------------------ */
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid var(--heartland-yellow);
+}
+
+.admin-header h1 {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    color: var(--strato-blue);
+    margin: 0;
+}
+
+.admin-header h1 span {
+    color: var(--heartland-yellow);
+    background: var(--strato-blue);
+    padding: 0 6px;
+    border-radius: 3px;
+}
+
+/* ------ Section headers --------------------------------------- */
+
+.admin-section {
+    margin-bottom: 3rem;
+}
+
+.admin-section h2 {
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--strato-blue);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.count-badge {
+    background: var(--rust-belt);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 99px;
+    padding: 2px 9px;
+    vertical-align: middle;
+}
+
+.count-badge.approved {
+    background: #2a7a3b;
+}
+
+.no-events {
+    color: #777;
+    font-style: italic;
+    padding: 1rem 0;
+}
+
+/* ------ Admin event card -------------------------------------- */
+
+.admin-event {
+    background: var(--white);
+    border-radius: 8px;
+    border-left: 5px solid var(--strato-blue);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem 1.5rem;
+    align-items: start;
+}
+
+.admin-event.status-approved {
+    border-left-color: #2a7a3b;
+}
+
+.admin-event.status-rejected {
+    border-left-color: #aaa;
+    opacity: 0.7;
+}
+
+.admin-event-info h3 {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    margin: 0 0 0.35rem;
+    color: var(--strato-blue);
+}
+
+.admin-event-meta {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0.15rem 0;
+    line-height: 1.4;
+}
+
+.admin-event-meta strong {
+    color: var(--strato-blue);
+}
+
+.admin-event-description {
+    font-size: 0.9rem;
+    color: #444;
+    margin: 0.5rem 0 0;
+    line-height: 1.55;
+}
+
+.admin-event-status {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #f0e6c0;
+    color: #7a5a00;
+    margin-bottom: 0.35rem;
+}
+
+.admin-event-status.approved { background: #d4edda; color: #1a5c2a; }
+.admin-event-status.rejected { background: #e8e8e8; color: #555; }
+
+/* ------ Action buttons ---------------------------------------- */
+
+.admin-event-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 110px;
+}
+
+.admin-btn {
+    display: block;
+    width: 100%;
+    padding: 0.45rem 0.75rem;
+    border: none;
+    border-radius: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: opacity 0.15s ease;
+}
+
+.admin-btn:hover { opacity: 0.85; }
+.admin-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.admin-btn-approve { background: #2a7a3b; color: var(--white); }
+.admin-btn-reject  { background: #888;    color: var(--white); }
+.admin-btn-delete  { background: var(--rust-belt); color: var(--white); }
+
+/* ------ Toast / feedback -------------------------------------- */
+
+.admin-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--strato-blue);
+    color: var(--white);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.admin-toast.show { opacity: 1; transform: translateY(0); }
+.admin-toast.error { background: var(--rust-belt); }
+
+/* ------ Responsive -------------------------------------------- */
+
+@media (max-width: 560px) {
+    .admin-event {
+        grid-template-columns: 1fr;
+    }
+    .admin-event-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .admin-btn {
+        width: auto;
+        flex: 1 1 80px;
+    }
+}

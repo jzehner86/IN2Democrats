@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — IN-02 Democrats</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ── Auth gate (shown until key is verified) ───────────────── -->
+<div id="auth-gate" class="auth-gate">
+    <h1>IN-02 <span style="color:var(--heartland-yellow)">DEMS</span> Admin</h1>
+    <p>Enter your admin key to manage event submissions.</p>
+    <input type="password" id="admin-key-input" placeholder="Admin key" autocomplete="current-password">
+    <p id="auth-error" class="auth-error" aria-live="polite"></p>
+    <button id="auth-submit" class="btn btn-blue" style="width:100%">Log In</button>
+</div>
+
+<!-- ── Admin dashboard (hidden until authenticated) ──────────── -->
+<div id="admin-dashboard" class="admin-wrap" hidden>
+
+    <div class="admin-header">
+        <h1>IN-02 <span>DEMS</span> Admin</h1>
+        <div style="display:flex;gap:0.75rem;align-items:center">
+            <button id="refresh-btn" class="btn btn-blue" style="font-size:0.9rem;padding:0.5rem 1rem">Refresh</button>
+            <button id="logout-btn" class="btn" style="font-size:0.9rem;padding:0.5rem 1rem;background:#888;color:#fff">Log Out</button>
+        </div>
+    </div>
+
+    <!-- Pending events -->
+    <section class="admin-section">
+        <h2>
+            Pending Review
+            <span id="pending-count" class="count-badge">0</span>
+        </h2>
+        <div id="pending-list"><p class="no-events">Loading…</p></div>
+    </section>
+
+    <!-- Approved events -->
+    <section class="admin-section">
+        <h2>
+            Approved
+            <span id="approved-count" class="count-badge approved">0</span>
+        </h2>
+        <div id="approved-list"></div>
+    </section>
+
+    <!-- Rejected events -->
+    <section class="admin-section">
+        <h2>Rejected / Archived</h2>
+        <div id="rejected-list"></div>
+    </section>
+
+</div>
+
+<!-- Toast notification -->
+<div id="admin-toast" class="admin-toast" role="status" aria-live="polite"></div>
+
+<script>
+// ─── CONFIGURE THIS AFTER RUNNING: sam deploy ────────────────────────────────
+const API_BASE = 'https://4ayg0m2fe8.execute-api.us-east-1.amazonaws.com/prod';
+// ─────────────────────────────────────────────────────────────────────────────
+
+const KEY_STORE = 'in02_admin_key';
+
+// ------------------------------------------------------------------
+// Toast
+// ------------------------------------------------------------------
+
+let toastTimer;
+function showToast(msg, isError = false) {
+    const el = document.getElementById('admin-toast');
+    clearTimeout(toastTimer);
+    el.textContent = msg;
+    el.className = 'admin-toast show' + (isError ? ' error' : '');
+    toastTimer = setTimeout(() => { el.className = 'admin-toast'; }, 3200);
+}
+
+// ------------------------------------------------------------------
+// Auth
+// ------------------------------------------------------------------
+
+function getKey() { return sessionStorage.getItem(KEY_STORE) || ''; }
+function saveKey(k) { sessionStorage.setItem(KEY_STORE, k); }
+function clearKey() { sessionStorage.removeItem(KEY_STORE); }
+
+async function tryLogin(key) {
+    const res = await fetch(`${API_BASE}/admin/events`, {
+        headers: { 'X-Admin-Key': key },
+    });
+    return res.status !== 401;
+}
+
+document.getElementById('auth-submit').addEventListener('click', async () => {
+    const key = document.getElementById('admin-key-input').value.trim();
+    const errEl = document.getElementById('auth-error');
+    if (!key) { errEl.textContent = 'Please enter your admin key.'; return; }
+
+    const btn = document.getElementById('auth-submit');
+    btn.disabled = true;
+    btn.textContent = 'Checking…';
+    errEl.textContent = '';
+
+    try {
+        const ok = await tryLogin(key);
+        if (ok) {
+            saveKey(key);
+            showDashboard();
+        } else {
+            errEl.textContent = 'Incorrect key. Please try again.';
+        }
+    } catch {
+        errEl.textContent = 'Could not reach server. Check your connection.';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Log In';
+    }
+});
+
+document.getElementById('admin-key-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('auth-submit').click();
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+    clearKey();
+    document.getElementById('admin-dashboard').hidden = true;
+    document.getElementById('auth-gate').hidden = false;
+    document.getElementById('admin-key-input').value = '';
+});
+
+document.getElementById('refresh-btn').addEventListener('click', loadAllEvents);
+
+// ------------------------------------------------------------------
+// Formatting helpers
+// ------------------------------------------------------------------
+
+function fmt(str) {
+    return (str ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function fmtDate(dateStr, timeStr) {
+    const dt = new Date(`${dateStr}T${timeStr}`);
+    return dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+        + ' at ' + dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+function fmtSubmitted(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+// ------------------------------------------------------------------
+// Render
+// ------------------------------------------------------------------
+
+function buildAdminCard(e) {
+    const isPending  = e.status === 'pending';
+    const isApproved = e.status === 'approved';
+
+    const approveBtn = isPending
+        ? `<button class="admin-btn admin-btn-approve" onclick="updateEvent('${e.id}','approved')">Approve</button>` : '';
+    const rejectBtn = isPending
+        ? `<button class="admin-btn admin-btn-reject" onclick="updateEvent('${e.id}','rejected')">Reject</button>` : '';
+    const restoreBtn = (!isPending && !isApproved)
+        ? `<button class="admin-btn admin-btn-approve" onclick="updateEvent('${e.id}','approved')">Restore</button>` : '';
+    const unapproveBtn = isApproved
+        ? `<button class="admin-btn admin-btn-reject" onclick="updateEvent('${e.id}','rejected')">Unapprove</button>` : '';
+
+    return `
+    <div class="admin-event status-${e.status}" data-id="${e.id}">
+        <div class="admin-event-info">
+            <span class="admin-event-status ${e.status}">${e.status.toUpperCase()}</span>
+            <h3>${fmt(e.title)}</h3>
+            <p class="admin-event-meta"><strong>When:</strong> ${fmtDate(e.date, e.time)}</p>
+            <p class="admin-event-meta"><strong>Where:</strong> ${fmt(e.location)}${e.address ? ', ' + fmt(e.address) : ''}</p>
+            <p class="admin-event-meta"><strong>Organizer:</strong> ${fmt(e.organizer)} &mdash; <a href="mailto:${fmt(e.contactEmail)}">${fmt(e.contactEmail)}</a></p>
+            ${e.rsvpLink ? `<p class="admin-event-meta"><strong>RSVP:</strong> <a href="${fmt(e.rsvpLink)}" target="_blank" rel="noopener">${fmt(e.rsvpLink)}</a></p>` : ''}
+            ${e.description ? `<p class="admin-event-description">${fmt(e.description)}</p>` : ''}
+            <p class="admin-event-meta" style="margin-top:0.5rem;font-size:0.8rem;color:#888">Submitted ${fmtSubmitted(e.createdAt)}</p>
+        </div>
+        <div class="admin-event-actions">
+            ${approveBtn}${unapproveBtn}${rejectBtn}${restoreBtn}
+            <button class="admin-btn admin-btn-delete" onclick="deleteEvent('${e.id}','${fmt(e.title)}')">Delete</button>
+        </div>
+    </div>`;
+}
+
+function renderGroups(events) {
+    const pending  = events.filter(e => e.status === 'pending');
+    const approved = events.filter(e => e.status === 'approved')
+        .sort((a, b) => a.date.localeCompare(b.date));
+    const rejected = events.filter(e => e.status === 'rejected');
+
+    document.getElementById('pending-count').textContent  = pending.length;
+    document.getElementById('approved-count').textContent = approved.length;
+
+    const p = document.getElementById('pending-list');
+    p.innerHTML = pending.length ? pending.map(buildAdminCard).join('') : '<p class="no-events">No pending submissions.</p>';
+
+    const a = document.getElementById('approved-list');
+    a.innerHTML = approved.length ? approved.map(buildAdminCard).join('') : '<p class="no-events">No approved events.</p>';
+
+    const r = document.getElementById('rejected-list');
+    r.innerHTML = rejected.length ? rejected.map(buildAdminCard).join('') : '<p class="no-events">None.</p>';
+}
+
+// ------------------------------------------------------------------
+// API calls
+// ------------------------------------------------------------------
+
+async function loadAllEvents() {
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/events`, { headers: { 'X-Admin-Key': key } });
+        if (res.status === 401) { clearKey(); location.reload(); return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        renderGroups(await res.json());
+    } catch (err) {
+        showToast('Failed to load events: ' + err.message, true);
+    }
+}
+
+async function updateEvent(id, status) {
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/events/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+            body: JSON.stringify({ status }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast(`Event ${status} successfully.`);
+        await loadAllEvents();
+    } catch (err) {
+        showToast('Update failed: ' + err.message, true);
+    }
+}
+
+async function deleteEvent(id, title) {
+    if (!confirm(`Delete "${title}"?\n\nThis cannot be undone.`)) return;
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/events/${id}`, {
+            method: 'DELETE',
+            headers: { 'X-Admin-Key': key },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast('Event deleted.');
+        await loadAllEvents();
+    } catch (err) {
+        showToast('Delete failed: ' + err.message, true);
+    }
+}
+
+// ------------------------------------------------------------------
+// Boot
+// ------------------------------------------------------------------
+
+function showDashboard() {
+    document.getElementById('auth-gate').hidden = true;
+    document.getElementById('admin-dashboard').hidden = false;
+    loadAllEvents();
+}
+
+// Auto-login if key is already in session storage
+if (getKey()) {
+    showDashboard();
+} else {
+    document.getElementById('admin-key-input').focus();
+}
+</script>
+</body>
+</html>

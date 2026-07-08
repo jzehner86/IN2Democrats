@@ -1,0 +1,129 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: IN-02 Democrats Events API
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        TABLE_NAME:
+          Ref: EventsTable
+        ADMIN_KEY:
+          Ref: AdminKey
+Parameters:
+  AdminKey:
+    Type: String
+    NoEcho: true
+    MinLength: 12
+    Description: Secret key for admin API access (min 12 chars). Store this somewhere
+      safe.
+Resources:
+  EventsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowOrigin: '''*'''
+        AllowHeaders: '''Content-Type,X-Admin-Key'''
+        AllowMethods: '''GET,POST,PATCH,DELETE,OPTIONS'''
+  GetEventsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: in02-get-events
+      CodeUri: GetEventsFunction
+      Handler: index.handler
+      Description: Returns all approved events sorted by date
+      Events:
+        GetEvents:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: EventsApi
+            Path: /events
+            Method: GET
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: EventsTable
+    Metadata:
+      SamResourceId: GetEventsFunction
+  SubmitEventFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: in02-submit-event
+      CodeUri: SubmitEventFunction
+      Handler: index.handler
+      Description: Accepts public event submissions and saves them as pending
+      Events:
+        SubmitEvent:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: EventsApi
+            Path: /events
+            Method: POST
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: EventsTable
+    Metadata:
+      SamResourceId: SubmitEventFunction
+  AdminEventsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: in02-admin-events
+      CodeUri: AdminEventsFunction
+      Handler: index.handler
+      Description: Admin-only endpoints for reviewing and moderating event submissions
+      Events:
+        ListAdmin:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: EventsApi
+            Path: /admin/events
+            Method: GET
+        UpdateAdmin:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: EventsApi
+            Path: /admin/events/{id}
+            Method: PATCH
+        DeleteAdmin:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: EventsApi
+            Path: /admin/events/{id}
+            Method: DELETE
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: EventsTable
+    Metadata:
+      SamResourceId: AdminEventsFunction
+  EventsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: in02-events
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint \u2014 paste this into js/events.js as API_BASE"
+    Value:
+      Fn::Sub: https://${EventsApi}.execute-api.${AWS::Region}.amazonaws.com/prod
+  TableName:
+    Description: DynamoDB table name
+    Value:
+      Ref: EventsTable

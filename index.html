@@ -65,9 +65,65 @@
     <section id="events" class="events-section">
         <div class="events-content">
             <h2>Upcoming Events</h2>
-            <p>Join us at a community event, town hall, or organizing meeting across the 2nd District. Sign up to get event alerts straight to your inbox.</p>
-            <div class="events-placeholder">Event listings coming soon — check back for updates.</div>
-            <button class="btn btn-blue js-modal-open">Get Event Alerts</button>
+            <p>Join us at a community event, town hall, or organizing meeting across the 2nd District.</p>
+
+            <!-- Populated by js/events.js -->
+            <div id="events-list" class="events-list">
+                <p class="events-empty">Loading events…</p>
+            </div>
+
+            <div class="events-actions">
+                <button class="btn btn-blue js-modal-open">Get Event Alerts</button>
+                <button class="btn btn-outline" id="toggle-submit-form" aria-expanded="false">Submit an Event</button>
+            </div>
+
+            <!-- Submit form — hidden until toggle is clicked -->
+            <div id="submit-event-panel" class="submit-panel" hidden>
+                <h3>Submit an Event</h3>
+                <p>Have an event you'd like to list? We'll review it within 1–2 business days.</p>
+                <form id="event-submit-form" class="submit-form" novalidate>
+                    <div class="field-full">
+                        <label for="evt-title">Event Title <span aria-hidden="true">*</span></label>
+                        <input type="text" id="evt-title" name="title" required maxlength="200" placeholder="e.g. Cass County Town Hall">
+                    </div>
+                    <div>
+                        <label for="evt-date">Date <span aria-hidden="true">*</span></label>
+                        <input type="date" id="evt-date" name="date" required>
+                    </div>
+                    <div>
+                        <label for="evt-time">Start Time <span aria-hidden="true">*</span></label>
+                        <input type="time" id="evt-time" name="time" required>
+                    </div>
+                    <div>
+                        <label for="evt-location">Venue / Location Name <span aria-hidden="true">*</span></label>
+                        <input type="text" id="evt-location" name="location" required maxlength="200" placeholder="e.g. Logansport Community Center">
+                    </div>
+                    <div>
+                        <label for="evt-address">Street Address</label>
+                        <input type="text" id="evt-address" name="address" maxlength="300" placeholder="123 Main St, Logansport, IN">
+                    </div>
+                    <div class="field-full">
+                        <label for="evt-description">Description</label>
+                        <textarea id="evt-description" name="description" maxlength="2000" rows="3" placeholder="What will happen at this event?"></textarea>
+                    </div>
+                    <div>
+                        <label for="evt-organizer">Organizer Name <span aria-hidden="true">*</span></label>
+                        <input type="text" id="evt-organizer" name="organizer" required maxlength="100" placeholder="Your name or org name">
+                    </div>
+                    <div>
+                        <label for="evt-email">Contact Email <span aria-hidden="true">*</span></label>
+                        <input type="email" id="evt-email" name="contactEmail" required maxlength="200" placeholder="organizer@example.com">
+                    </div>
+                    <div class="field-full">
+                        <label for="evt-rsvp">RSVP / Registration Link</label>
+                        <input type="url" id="evt-rsvp" name="rsvpLink" maxlength="500" placeholder="https://…">
+                    </div>
+                    <div class="submit-form-footer">
+                        <button type="submit" class="btn btn-red">Submit Event</button>
+                        <p id="submit-status" class="submit-status" aria-live="polite"></p>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -115,5 +171,6 @@
     <div id="site-footer"></div>
 
     <script src="js/components.js"></script>
+    <script src="js/events.js"></script>
 </body>
 </html>
