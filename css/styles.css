@@ -62,7 +62,7 @@ a {
     border-radius: 2px;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
     text-align: center;
     line-height: 1;
 }
@@ -159,9 +159,15 @@ header {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: color 0.15s ease;
+}
+
+.nav-links a.nav-item:visited {
+    color: var(--strato-blue);
 }
 
 .nav-links a.nav-item:hover,
+.nav-links a.nav-item:visited:hover,
 .nav-links a.nav-item.active {
     color: var(--rust-belt);
     text-decoration: underline;
@@ -183,7 +189,36 @@ header {
     width: 25px;
     height: 2px;
     background-color: var(--strato-blue);
-    transition: transform 0.3s, opacity 0.3s;
+    transition: transform 0.3s, opacity 0.3s, transform 0.3s;
+}
+
+/* Hamburger → X animation when open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---- Skip to Content (Accessibility) ---- */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    z-index: 9999;
+    padding: 12px 24px;
+    background-color: var(--heartland-yellow);
+    color: var(--strato-blue);
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: top 0.1s;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--strato-blue);
+    outline-offset: 2px;
 }
 
 /* ---- Footer ---- */

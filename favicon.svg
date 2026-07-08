@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark blue background -->
+  <rect width="32" height="32" rx="4" fill="#0A1C3B"/>
+  <!-- Yellow accent bar -->
+  <rect width="32" height="5" fill="#F6C039"/>
+  <!-- "D" for Democrats in white -->
+  <text x="16" y="26" font-family="Arial Black, Impact, sans-serif" font-size="17" font-weight="900" fill="#FFFFFF" text-anchor="middle">D</text>
+</svg>

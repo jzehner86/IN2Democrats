@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indiana's 2nd Congressional District Democrats</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Indiana's 2nd Congressional District Democrats — working together to build a stronger, better Hoosier future. Volunteer, donate, and take action.">
+    <!-- Open Graph (update og:url when your domain is confirmed) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://YOUR_DOMAIN/">
+    <meta property="og:title" content="Indiana's 2nd Congressional District Democrats">
+    <meta property="og:description" content="Working together to build a stronger, better Indiana 2nd Congressional District. Grounded in the heartland, looking toward the future.">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Indiana's 2nd Congressional District Democrats">
+    <meta name="twitter:description" content="Working together to build a stronger, better Indiana 2nd Congressional District.">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -12,15 +26,13 @@
 </head>
 <body>
 
-    <div class="top-bar">Chip in $25 to help elect Indiana 2nd District Democrats</div>
-
-    <!-- Nav injected by components.js; data-page sets the active link -->
+    <!-- Skip link, alert bar, and nav injected by components.js -->
     <div id="site-header" data-page="home"></div>
 
-    <section class="hero">
+    <section id="main-content" class="hero">
         <h1>A Fresh Vision for Indiana</h1>
         <p>Working together to build a stronger, better Indiana 2nd Congressional District. Grounded in the heartland, looking toward the future.</p>
-        <button id="openModalBtn" class="btn btn-yellow">Join The Movement</button>
+        <button class="btn btn-yellow js-modal-open">Join The Movement</button>
     </section>
 
     <section id="about" class="welcome">
@@ -47,6 +59,15 @@
                 <p>Connect with your county party leadership to help build the democratic infrastructure right in your backyard.</p>
                 <a href="our-party.html" class="btn btn-blue">Find Your County</a>
             </div>
+        </div>
+    </section>
+
+    <section id="events" class="events-section">
+        <div class="events-content">
+            <h2>Upcoming Events</h2>
+            <p>Join us at a community event, town hall, or organizing meeting across the 2nd District. Sign up to get event alerts straight to your inbox.</p>
+            <div class="events-placeholder">Event listings coming soon — check back for updates.</div>
+            <button class="btn btn-blue js-modal-open">Get Event Alerts</button>
         </div>
     </section>
 
@@ -79,15 +100,13 @@
         </div>
     </section>
 
-    <!-- "Join The Movement" modal -->
+    <!-- "Join The Movement" / "Get Event Alerts" modal -->
     <div id="actionModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" aria-label="Close">&times;</button>
             <h2>Join The Team</h2>
             <p>Sign up for updates and volunteer opportunities.</p>
-            <!-- Action Network embed -->
-            <link href="https://actionnetwork.org/css/style-embed-whitelabel-v3.css" rel="stylesheet" type="text/css">
-            <script src="https://actionnetwork.org/widgets/v6/form/join-the-movement-162?format=js&source=widget&style=full"></script>
+            <!-- Action Network embed — injected by components.js on first modal open -->
             <div id="can-form-area-join-the-movement-162" style="width:100%"></div>
         </div>
     </div>

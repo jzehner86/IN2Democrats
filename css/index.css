@@ -160,6 +160,34 @@
     margin-bottom: 25px;
 }
 
+/* ---- Events ---- */
+.events-section {
+    background-color: var(--calumet);
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.events-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.events-section h2 { font-size: 3rem; margin-bottom: 25px; }
+
+.events-placeholder {
+    background-color: var(--white);
+    border: 2px dashed var(--blue-sky);
+    padding: 40px 30px;
+    margin: 0 auto 30px;
+    max-width: 600px;
+    color: var(--blue-sky);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
     .hero h1 { font-size: 3rem; }
