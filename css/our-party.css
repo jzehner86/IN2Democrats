@@ -1,0 +1,69 @@
+/* ---- Hero ---- */
+.hero {
+    background-color: var(--strato-blue);
+    color: var(--white);
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    color: var(--white);
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    color: var(--white);
+    font-size: 1.25rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: var(--font-serif);
+}
+
+/* ---- Counties Grid ---- */
+.counties-section {
+    background-color: var(--calumet);
+    padding: 80px 20px;
+}
+
+.counties-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.county-card {
+    background-color: var(--white);
+    padding: 40px 30px;
+    text-align: center;
+    border-top: 6px solid var(--heartland-yellow);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Rotating accent colours on the card tops */
+.county-card:nth-child(3n+2) { border-top-color: var(--strato-blue); }
+.county-card:nth-child(3n)   { border-top-color: var(--rust-belt); }
+
+.county-card:hover { transform: translateY(-5px); }
+
+.county-card h3 { font-size: 1.8rem; margin-bottom: 15px; }
+
+.county-card p {
+    font-size: 1rem;
+    color: #555;
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.county-card .btn-blue { display: block; margin-top: 15px; }
+
+/* ---- Mobile ---- */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 3rem; }
+}

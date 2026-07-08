@@ -1,0 +1,166 @@
+/* ---- Hero ---- */
+.hero {
+    background-color: var(--strato-blue);
+    color: var(--white);
+    text-align: center;
+    padding: 100px 20px 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative arch shape at bottom of hero */
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 100px;
+    background-color: var(--calumet);
+    border-radius: 50% 50% 0 0;
+}
+
+.hero h1 {
+    color: var(--white);
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero p {
+    color: var(--white);
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    font-family: var(--font-serif);
+    position: relative;
+    z-index: 2;
+}
+
+.hero .btn {
+    position: relative;
+    z-index: 2;
+    font-size: 1.6rem;
+    padding: 15px 40px;
+    min-width: 280px;
+}
+
+/* ---- Welcome ---- */
+.welcome {
+    background-color: var(--calumet);
+    padding: 60px 20px 80px;
+    text-align: center;
+}
+
+.welcome-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.welcome h2 { font-size: 3rem; margin-bottom: 25px; }
+
+/* ---- Action Cards ---- */
+.action-center {
+    background-color: var(--white);
+    padding: 80px 20px;
+}
+
+.action-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.card {
+    background-color: var(--calumet);
+    padding: 50px 30px;
+    text-align: center;
+    border-bottom: 8px solid var(--strato-blue);
+    transition: transform 0.2s ease;
+}
+.card:hover { transform: translateY(-5px); }
+.card h3 { font-size: 2rem; margin-bottom: 15px; }
+.card p  { margin-bottom: 30px; }
+
+/* ---- Donations ---- */
+.donation-section {
+    background-color: var(--strato-blue);
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.donation-section h2 {
+    color: var(--white);
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+.donation-section > p {
+    color: var(--white);
+    font-family: var(--font-sans);
+    margin-top: 10px;
+}
+
+.donate-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 30px auto 0;
+}
+
+.donate-box {
+    background-color: var(--heartland-yellow);
+    color: var(--strato-blue);
+    padding: 20px 10px;
+    width: 150px;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-radius: 6px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: block;
+}
+.donate-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    color: var(--strato-blue);
+}
+
+/* ---- Social Icons ---- */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 40px auto -80px;
+    position: relative;
+    z-index: 10;
+}
+.social-icon { transition: opacity 0.2s; display: inline-block; }
+.social-icon:hover { opacity: 0.8; }
+
+/* ---- Modal content typography ---- */
+.modal-content h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.modal-content > p {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 3rem; }
+}

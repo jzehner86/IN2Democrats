@@ -1,0 +1,344 @@
+/* =============================================
+   IN-02 DEMS — Shared Design System
+   Google Fonts (Oswald, Inter, Lora) loaded in each HTML page
+   ============================================= */
+
+:root {
+    --strato-blue: #0A1C3B;
+    --heartland-yellow: #F6C039;
+    --rust-belt: #C64028;
+    --rust-dark: #9E3320;
+    --blue-sky: #6B94AA;
+    --calumet: #E2DCCF;
+    --white: #FFFFFF;
+
+    --font-head: 'Oswald', sans-serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Lora', serif;
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-serif);
+    color: var(--strato-blue);
+    background-color: var(--white);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: var(--font-head);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--strato-blue);
+}
+
+p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--rust-belt);
+    font-family: var(--font-sans);
+    font-weight: 600;
+}
+
+/* ---- Buttons ---- */
+.btn {
+    display: inline-block;
+    padding: 14px 28px;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-radius: 2px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    line-height: 1;
+}
+
+.btn-yellow {
+    background-color: var(--heartland-yellow);
+    color: var(--strato-blue);
+    border-color: var(--heartland-yellow);
+}
+.btn-yellow:hover {
+    background-color: transparent;
+    color: var(--heartland-yellow);
+}
+
+.btn-blue {
+    background-color: var(--strato-blue);
+    color: var(--white);
+    border-color: var(--strato-blue);
+}
+.btn-blue:hover {
+    background-color: transparent;
+    color: var(--strato-blue);
+}
+
+.btn-red {
+    background-color: var(--rust-belt);
+    color: var(--white);
+    border-color: var(--rust-belt);
+}
+.btn-red:hover {
+    background-color: transparent;
+    color: var(--rust-belt);
+}
+
+/* ---- Top Alert Bar ---- */
+.top-bar {
+    background-color: var(--rust-belt);
+    color: var(--white);
+    text-align: center;
+    padding: 12px;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* ---- Navigation ---- */
+header {
+    background-color: var(--calumet);
+    border-bottom: 4px solid var(--strato-blue);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    position: relative;
+}
+
+.logo a {
+    color: inherit;
+    text-decoration: none;
+    font-family: inherit;
+}
+
+.logo h2 {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--strato-blue);
+    margin: 0;
+    line-height: 1;
+}
+
+.logo span { color: var(--rust-belt); }
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a.nav-item {
+    color: var(--strato-blue);
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-links a.nav-item:hover,
+.nav-links a.nav-item.active {
+    color: var(--rust-belt);
+    text-decoration: underline;
+}
+
+/* Hamburger toggle — hidden on desktop */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--strato-blue);
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+/* ---- Footer ---- */
+footer {
+    background-color: var(--strato-blue);
+    color: var(--blue-sky);
+    text-align: center;
+    padding: 60px 20px;
+    font-family: var(--font-sans);
+}
+
+.disclaimer {
+    border: 2px solid var(--blue-sky);
+    display: inline-block;
+    padding: 20px 40px;
+    margin-bottom: 30px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+}
+
+.footer-links { margin-top: 10px; }
+
+.footer-links a {
+    color: var(--blue-sky);
+    margin: 0 15px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+.footer-links a:hover { color: var(--heartland-yellow); }
+
+/* ---- Modal ---- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background-color: rgba(10, 28, 59, 0.85);
+    backdrop-filter: blur(4px);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: var(--calumet);
+    margin: 5% auto;
+    padding: 40px 30px;
+    border-top: 8px solid var(--heartland-yellow);
+    width: 90%;
+    max-width: 650px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--strato-blue);
+    transition: color 0.2s;
+}
+.close-btn:hover { color: var(--rust-belt); }
+
+/* ---- Action Network Form Overrides ---- */
+#can-form-area {
+    font-family: var(--font-sans) !important;
+    color: var(--strato-blue) !important;
+    text-align: left !important;
+    margin: 0 auto !important;
+    float: none !important;
+    display: block !important;
+    max-width: 600px !important;
+}
+
+#can-form-area input[type="text"],
+#can-form-area input[type="email"],
+#can-form-area input[type="tel"],
+#can-form-area select {
+    font-family: var(--font-sans) !important;
+    border: 2px solid var(--strato-blue) !important;
+    border-radius: 2px !important;
+    padding: 12px 15px !important;
+    background-color: var(--white) !important;
+    color: var(--strato-blue) !important;
+    font-size: 1rem !important;
+    margin-bottom: 15px !important;
+}
+
+#can-form-area input[type="submit"],
+#can-form-area .button {
+    background-color: var(--strato-blue) !important;
+    color: var(--white) !important;
+    border: 2px solid var(--strato-blue) !important;
+    font-family: var(--font-sans) !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 2px !important;
+    padding: 14px 28px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    margin-top: 15px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+#can-form-area input[type="submit"]:hover,
+#can-form-area .button:hover {
+    background-color: transparent !important;
+    color: var(--strato-blue) !important;
+}
+
+#can-form-area label {
+    font-weight: 600 !important;
+    color: var(--strato-blue) !important;
+    margin-bottom: 5px !important;
+}
+
+#can-form-area .control-label {
+    font-family: var(--font-head) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-size: 1.2rem !important;
+    margin-top: 15px !important;
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--calumet);
+        border-bottom: 4px solid var(--strato-blue);
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+}
