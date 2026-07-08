@@ -111,20 +111,8 @@
                 <h2 id="county-modal-title"></h2>
                 <p id="county-modal-blurb" class="county-modal-blurb"></p>
             </div>
-            <div class="county-modal-body">
-                <p class="county-info-soon">
-                    Detailed county information — including local leadership contacts, upcoming events, and ways to get involved — is coming soon.
-                </p>
-                <div class="county-info-placeholder" aria-hidden="true">
-                    <div class="county-placeholder-line"></div>
-                    <div class="county-placeholder-line short"></div>
-                    <div class="county-placeholder-line"></div>
-                    <div class="county-placeholder-line short"></div>
-                </div>
-            </div>
-            <div class="county-modal-footer">
-                <button class="btn btn-blue js-modal-open">Get Involved</button>
-            </div>
+            <div id="county-modal-body" class="county-modal-body"></div>
+            <div id="county-modal-footer" class="county-modal-footer"></div>
         </div>
     </div>
 
@@ -143,14 +131,113 @@
     <script src="js/components.js"></script>
     <script>
     (function () {
+
+        // ── County data ───────────────────────────────────────────────
+        const COUNTY_DATA = {
+            'Cass County': {
+                chair:    'Lita Rouser',
+                email:    'lrouser@cassindems.org',
+                website:  'https://cassindems.org',
+                facebook: 'https://facebook.com/FriendsofCassINDems',
+            },
+            'Elkhart County': {
+                chair:    'Chad Crabtree',
+                email:    'chair@elkhartcountydemocrats.com',
+                address:  'P.O. Box 1116, Elkhart, IN 46515-1116',
+                website:  'https://elkhartcountydemocrats.com',
+            },
+            'Fulton County': {
+                chair:    'Joshua Zehner',
+                email:    'jzehner@fultondemocrats.org',
+            },
+            'Kosciusko County': {
+                chair:    'Vicki Morton',
+                email:    'vmorton@kosciuskodemocrats.com',
+                website:  'https://kosciuskodemocrats.com',
+            },
+            'LaPorte County': {
+                chair:    'Julia Sinclair',
+                email:    'jsinclair@laportecountydems.org',
+                facebook: 'https://facebook.com/LaPorte-County-Democratic-Party-369975909749601',
+                twitter:  'https://twitter.com/LPCDemocrats',
+            },
+            'Marshall County': {
+                chair:    'Megan Rogers',
+                email:    'mrogers@marshallcountydems.com',
+                website:  'https://marshallcountydems.com',
+                facebook: 'https://facebook.com/MarshallCountyDemocrats',
+            },
+            'Miami County': {
+                chair:    'Stephanie Graf-Gilliland',
+                email:    'sgilliland@mcdem.org',
+                website:  'https://mcdem.org',
+                facebook: 'https://facebook.com/Miami-County-Democratic-Party-414141955598229',
+            },
+            'Pulaski County': {
+                chair:    'Doug Denton',
+                email:    'ddenton@pulaskicountydems.org',
+                facebook: 'https://facebook.com/Pulaski-County-Indiana-Democrats-231852813504005',
+            },
+            'St. Joseph County': {
+                chair:    'Don Westerhausen',
+                email:    'dwesterhausen@stjoedemocrats.org',
+                website:  'https://stjoedemocrats.org',
+                facebook: 'https://facebook.com/stjoedemocrats',
+            },
+            'Starke County': {
+                chair:    'Sheri Bartoli',
+                email:    'sbartoli@starkedemocrats.org',
+                website:  'https://starkedemocrats.org',
+                facebook: 'https://facebook.com/Starke-County-Democrats-376933021484',
+            },
+            'Wabash County': {
+                chair:    'Tammy Ingalls',
+                email:    'tingalls@wabashcountydems.org',
+            },
+        };
+
+        // ── Modal elements ────────────────────────────────────────────
         const countyModal = document.getElementById('countyModal');
         const titleEl     = document.getElementById('county-modal-title');
         const blurbEl     = document.getElementById('county-modal-blurb');
+        const bodyEl      = document.getElementById('county-modal-body');
+        const footerEl    = document.getElementById('county-modal-footer');
         const closeBtn    = countyModal.querySelector('.close-btn');
 
+        // ── Build modal content ───────────────────────────────────────
+        function buildRow(label, valueHtml) {
+            return `<div class="county-detail-row">
+                <span class="county-detail-label">${label}</span>
+                <span class="county-detail-value">${valueHtml}</span>
+            </div>`;
+        }
+
+        function populateModal(countyName, blurb) {
+            titleEl.textContent = countyName;
+            blurbEl.textContent = blurb;
+
+            const data = COUNTY_DATA[countyName] || {};
+            const rows = [];
+
+            if (data.chair)    rows.push(buildRow('Chair', data.chair));
+            if (data.email)    rows.push(buildRow('Email', `<a href="mailto:${data.email}">${data.email}</a>`));
+            if (data.address)  rows.push(buildRow('Address', data.address));
+            if (data.website)  rows.push(buildRow('Website', `<a href="${data.website}" target="_blank" rel="noopener">${data.website.replace('https://', '')}</a>`));
+            if (data.facebook) rows.push(buildRow('Facebook', `<a href="${data.facebook}" target="_blank" rel="noopener">Visit Facebook Page</a>`));
+            if (data.twitter)  rows.push(buildRow('Twitter / X', `<a href="${data.twitter}" target="_blank" rel="noopener">${data.twitter.replace('https://twitter.com/', '@')}</a>`));
+
+            bodyEl.innerHTML = rows.length
+                ? `<div class="county-detail-list">${rows.join('')}</div>`
+                : '<p class="county-info-soon">Contact details coming soon.</p>';
+
+            footerEl.innerHTML = data.email
+                ? `<a href="mailto:${data.email}" class="btn btn-blue">Email the Chair</a>`
+                : '<button class="btn btn-blue js-modal-open">Get Involved</button>';
+        }
+
+        // ── Open / close ──────────────────────────────────────────────
         function openCountyModal(card) {
-            titleEl.textContent = card.dataset.county;
-            blurbEl.textContent = card.dataset.blurb;
+            populateModal(card.dataset.county, card.dataset.blurb);
             countyModal.style.display = 'block';
             closeBtn.focus();
         }
@@ -164,14 +251,9 @@
         });
 
         closeBtn.addEventListener('click', closeCountyModal);
+        window.addEventListener('click', e => { if (e.target === countyModal) closeCountyModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCountyModal(); });
 
-        window.addEventListener('click', e => {
-            if (e.target === countyModal) closeCountyModal();
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeCountyModal();
-        });
     })();
     </script>
 </body>
