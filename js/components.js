@@ -20,8 +20,7 @@
         { id: 'rudy',     href: 'rudy-facts.html',  label: "Rudy's Record" },
         { id: 'party',    href: 'our-party.html',    label: 'Our Party'     },
         { id: 'platform', href: 'platform.html',     label: 'Platform'      },
-        { id: 'action',   href: 'index.html#action', label: 'Take Action'   },
-        { id: 'events',   href: 'index.html#events', label: 'Events'        },
+        { id: 'events',   href: 'events.html',        label: 'Events'        },
     ];
 
     // ------------------------------------------------------------------

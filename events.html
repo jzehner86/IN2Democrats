@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Events | IN-02 Democrats</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Upcoming events across Indiana's 2nd Congressional District — town halls, organizing meetings, canvasses, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://YOUR_DOMAIN/events.html">
+    <meta property="og:title" content="Community Events | IN-02 Democrats">
+    <meta property="og:description" content="Find and attend Democratic events happening across all 11 counties of Indiana's 2nd Congressional District.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Community Events | IN-02 Democrats">
+    <meta name="twitter:description" content="Upcoming events across Indiana's 2nd Congressional District.">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/events.css">
+</head>
+<body>
+
+    <div id="site-header" data-page="events"></div>
+
+    <section id="main-content" class="events-hero">
+        <h1>Community Events</h1>
+        <p>Town halls, canvasses, organizing meetings, and more — happening across all 11 counties of Indiana's 2nd District.</p>
+    </section>
+
+    <section class="events-page-section">
+        <div class="events-page-wrap">
+
+            <!-- Events list — populated by js/events.js -->
+            <div id="events-list" class="events-list">
+                <p class="events-empty">Loading events…</p>
+            </div>
+
+            <div class="events-actions">
+                <button class="btn btn-outline" id="open-submit-modal">Submit an Event</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Submit an Event modal -->
+    <div id="submitEventModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="submit-modal-title">
+        <div class="modal-content submit-modal-content">
+            <button class="close-btn" aria-label="Close">&times;</button>
+            <h2 id="submit-modal-title">Submit an Event</h2>
+            <p>Have an event you'd like to list? We'll review it within 1–2 business days.</p>
+            <form id="event-submit-form" class="submit-form" novalidate>
+                <div class="field-full">
+                    <label for="evt-title">Event Title <span aria-hidden="true">*</span></label>
+                    <input type="text" id="evt-title" name="title" required maxlength="200" placeholder="e.g. Cass County Town Hall">
+                </div>
+                <div>
+                    <label for="evt-date">Date <span aria-hidden="true">*</span></label>
+                    <input type="date" id="evt-date" name="date" required>
+                </div>
+                <div>
+                    <label for="evt-time">Start Time <span aria-hidden="true">*</span></label>
+                    <input type="time" id="evt-time" name="time" required>
+                </div>
+                <div>
+                    <label for="evt-location">Venue / Location Name <span aria-hidden="true">*</span></label>
+                    <input type="text" id="evt-location" name="location" required maxlength="200" placeholder="e.g. Logansport Community Center">
+                </div>
+                <div>
+                    <label for="evt-address">Street Address</label>
+                    <input type="text" id="evt-address" name="address" maxlength="300" placeholder="123 Main St, Logansport, IN">
+                </div>
+                <div class="field-full">
+                    <label for="evt-description">Description</label>
+                    <textarea id="evt-description" name="description" maxlength="2000" rows="3" placeholder="What will happen at this event?"></textarea>
+                </div>
+                <div>
+                    <label for="evt-organizer">Organizer Name <span aria-hidden="true">*</span></label>
+                    <input type="text" id="evt-organizer" name="organizer" required maxlength="100" placeholder="Your name or org name">
+                </div>
+                <div>
+                    <label for="evt-email">Contact Email <span aria-hidden="true">*</span></label>
+                    <input type="email" id="evt-email" name="contactEmail" required maxlength="200" placeholder="organizer@example.com">
+                </div>
+                <div class="field-full">
+                    <label for="evt-rsvp">RSVP / Registration Link</label>
+                    <input type="url" id="evt-rsvp" name="rsvpLink" maxlength="500" placeholder="https://…">
+                </div>
+                <div class="submit-form-footer">
+                    <button type="submit" class="btn btn-red">Submit Event</button>
+                    <p id="submit-status" class="submit-status" aria-live="polite"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Action Network modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" aria-label="Close">&times;</button>
+            <h2>Join The Team</h2>
+            <p>Sign up for updates and volunteer opportunities.</p>
+            <div id="can-form-area-join-the-movement-162" style="width:100%"></div>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <script src="js/components.js"></script>
+    <script src="js/events.js"></script>
+</body>
+</html>

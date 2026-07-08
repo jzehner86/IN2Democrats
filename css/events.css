@@ -1,0 +1,232 @@
+/* ---------------------------------------------------------------
+   IN-02 DEMS — Events Page
+---------------------------------------------------------------- */
+
+/* ── Hero ─────────────────────────────────────────────────────── */
+
+.events-hero {
+    background-color: var(--strato-blue);
+    color: var(--white);
+    text-align: center;
+    padding: 80px 20px 70px;
+}
+
+.events-hero h1 {
+    color: var(--white);
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.events-hero p {
+    color: rgba(255,255,255,0.88);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+/* ── Page content wrapper ─────────────────────────────────────── */
+
+.events-page-section {
+    background: var(--white);
+    padding: 60px 20px 80px;
+}
+
+.events-page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* ── Events list ──────────────────────────────────────────────── */
+
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.events-empty {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 3rem 0;
+}
+
+/* ── Individual event card ────────────────────────────────────── */
+
+.event-card {
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    overflow: hidden;
+    text-align: left;
+}
+
+.event-date-badge {
+    background: var(--strato-blue);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.5rem;
+    flex-shrink: 0;
+}
+
+.event-month {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heartland-yellow);
+}
+
+.event-day {
+    font-family: var(--font-head);
+    font-size: 2.1rem;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.event-body {
+    padding: 1.1rem 1.4rem;
+}
+
+.event-title {
+    font-family: var(--font-head);
+    font-size: 1.25rem;
+    color: var(--strato-blue);
+    margin: 0 0 0.4rem;
+}
+
+.event-meta {
+    font-size: 0.875rem;
+    color: #555;
+    margin: 0 0 0.2rem;
+}
+
+.event-address {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0 0 0.4rem;
+}
+
+.event-description {
+    font-size: 0.9rem;
+    color: #444;
+    margin: 0.5rem 0;
+    line-height: 1.55;
+}
+
+.event-organizer {
+    font-size: 0.8rem;
+    color: #777;
+    margin: 0.4rem 0 0.75rem;
+    font-style: italic;
+}
+
+.event-rsvp {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+}
+
+/* ── Action buttons ───────────────────────────────────────────── */
+
+.events-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ── Submit modal ─────────────────────────────────────────────── */
+
+.submit-modal-content {
+    max-width: 680px;
+    text-align: left;
+}
+
+.submit-modal-content h2 {
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+}
+
+.submit-modal-content > p {
+    text-align: left;
+    color: #555;
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
+}
+
+.submit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+}
+
+.submit-form .field-full { grid-column: 1 / -1; }
+
+.submit-form label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--strato-blue);
+    margin-bottom: 0.3rem;
+}
+
+.submit-form label span { color: var(--rust-belt); margin-left: 2px; }
+
+.submit-form input,
+.submit-form textarea {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--strato-blue);
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+.submit-form input:focus,
+.submit-form textarea:focus {
+    outline: none;
+    border-color: var(--strato-blue);
+}
+
+.submit-form textarea { resize: vertical; min-height: 90px; }
+
+.submit-form-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.submit-status { font-size: 0.9rem; font-weight: 600; min-height: 1.4em; }
+.submit-status.success { color: #2a7a3b; }
+.submit-status.error   { color: var(--rust-belt); }
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .events-hero h1    { font-size: 2.8rem; }
+    .submit-form       { grid-template-columns: 1fr; }
+    .submit-form .field-full { grid-column: 1; }
+}
+
+@media (max-width: 480px) {
+    .event-card        { grid-template-columns: 64px 1fr; }
+    .event-day         { font-size: 1.7rem; }
+}
