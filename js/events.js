@@ -93,20 +93,28 @@ async function loadEvents() {
 // ------------------------------------------------------------------
 
 function initSubmitForm() {
-    const toggleBtn = document.getElementById('toggle-submit-form');
-    const panel     = document.getElementById('submit-event-panel');
-    const form      = document.getElementById('event-submit-form');
-    const status    = document.getElementById('submit-status');
+    const openBtn  = document.getElementById('open-submit-modal');
+    const modal    = document.getElementById('submitEventModal');
+    const closeBtn = modal?.querySelector('.close-btn');
+    const form     = document.getElementById('event-submit-form');
+    const status   = document.getElementById('submit-status');
 
-    if (!toggleBtn || !panel || !form) return;
+    if (!openBtn || !modal || !form) return;
 
-    toggleBtn.addEventListener('click', () => {
-        const isHidden = panel.hidden;
-        panel.hidden = !isHidden;
-        toggleBtn.setAttribute('aria-expanded', String(isHidden));
-        toggleBtn.textContent = isHidden ? 'Cancel' : 'Submit an Event';
-        if (isHidden) panel.querySelector('input, textarea, select')?.focus();
-    });
+    function openModal() {
+        modal.style.display = 'block';
+        form.querySelector('input, textarea')?.focus();
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        if (status) { status.textContent = ''; status.className = 'submit-status'; }
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    window.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -142,9 +150,7 @@ function initSubmitForm() {
                 status.className = 'submit-status success';
             }
             form.reset();
-            panel.hidden = true;
-            toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.textContent = 'Submit an Event';
+            setTimeout(closeModal, 2500);
         } catch (err) {
             if (status) {
                 status.textContent = '✗ ' + err.message;

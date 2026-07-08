@@ -288,24 +288,20 @@
     margin-bottom: 1.5rem;
 }
 
-/* Submit event panel */
-.submit-panel {
-    background: var(--white);
-    border-radius: 8px;
-    padding: 2rem 2rem 1.75rem;
-    margin-top: 2rem;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+/* Submit event modal — wider than the default modal to fit the 2-col form grid */
+.submit-modal-content {
+    max-width: 680px;
     text-align: left;
 }
 
-.submit-panel h3 {
-    font-family: var(--font-head);
-    font-size: 1.5rem;
-    color: var(--strato-blue);
-    margin: 0 0 0.4rem;
+.submit-modal-content h2 {
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
 }
 
-.submit-panel > p {
+.submit-modal-content > p {
+    text-align: left;
     color: #555;
     font-size: 0.9rem;
     margin: 0 0 1.5rem;
