@@ -223,7 +223,79 @@ body {
 
 .admin-btn-approve { background: #2a7a3b; color: var(--white); }
 .admin-btn-reject  { background: #888;    color: var(--white); }
+.admin-btn-edit    { background: var(--strato-blue); color: var(--white); }
 .admin-btn-delete  { background: var(--rust-belt); color: var(--white); }
+
+/* ------ Edit event modal -------------------------------------- */
+
+.admin-edit-modal-content {
+    max-width: 680px;
+    text-align: left;
+}
+
+.admin-edit-modal-content h2 {
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-edit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+}
+
+.admin-edit-form .field-full { grid-column: 1 / -1; }
+
+.admin-edit-form label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--strato-blue);
+    margin-bottom: 0.3rem;
+}
+
+.admin-edit-form label span { color: var(--rust-belt); margin-left: 2px; }
+
+.admin-edit-form input,
+.admin-edit-form textarea {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--strato-blue);
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+.admin-edit-form input:focus,
+.admin-edit-form textarea:focus {
+    outline: none;
+    border-color: var(--strato-blue);
+}
+
+.admin-edit-form textarea { resize: vertical; min-height: 90px; }
+
+.edit-form-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.edit-status { font-size: 0.9rem; font-weight: 600; min-height: 1.4em; }
+.edit-status.error { color: var(--rust-belt); }
+
+@media (max-width: 560px) {
+    .admin-edit-form { grid-template-columns: 1fr; }
+    .admin-edit-form .field-full { grid-column: 1; }
+}
 
 /* ------ Toast / feedback -------------------------------------- */
 

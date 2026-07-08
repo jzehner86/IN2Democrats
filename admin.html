@@ -64,6 +64,58 @@
 <!-- Toast notification -->
 <div id="admin-toast" class="admin-toast" role="status" aria-live="polite"></div>
 
+<!-- Edit Event modal -->
+<div id="editEventModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="modal-content admin-edit-modal-content">
+        <button class="close-btn" aria-label="Close" onclick="closeEditModal()">&times;</button>
+        <h2 id="edit-modal-title">Edit Event</h2>
+        <form id="edit-event-form" class="admin-edit-form" novalidate>
+            <input type="hidden" id="edit-evt-id">
+            <div class="field-full">
+                <label for="edit-evt-title">Event Title <span aria-hidden="true">*</span></label>
+                <input type="text" id="edit-evt-title" name="title" required maxlength="200">
+            </div>
+            <div>
+                <label for="edit-evt-date">Date <span aria-hidden="true">*</span></label>
+                <input type="date" id="edit-evt-date" name="date" required>
+            </div>
+            <div>
+                <label for="edit-evt-time">Start Time <span aria-hidden="true">*</span></label>
+                <input type="time" id="edit-evt-time" name="time" required>
+            </div>
+            <div>
+                <label for="edit-evt-location">Venue / Location Name <span aria-hidden="true">*</span></label>
+                <input type="text" id="edit-evt-location" name="location" required maxlength="200">
+            </div>
+            <div>
+                <label for="edit-evt-address">Street Address</label>
+                <input type="text" id="edit-evt-address" name="address" maxlength="300">
+            </div>
+            <div class="field-full">
+                <label for="edit-evt-desc">Description</label>
+                <textarea id="edit-evt-desc" name="description" maxlength="2000" rows="3"></textarea>
+            </div>
+            <div>
+                <label for="edit-evt-organizer">Organizer Name <span aria-hidden="true">*</span></label>
+                <input type="text" id="edit-evt-organizer" name="organizer" required maxlength="100">
+            </div>
+            <div>
+                <label for="edit-evt-email">Contact Email <span aria-hidden="true">*</span></label>
+                <input type="email" id="edit-evt-email" name="contactEmail" required maxlength="200">
+            </div>
+            <div class="field-full">
+                <label for="edit-evt-rsvp">RSVP / Registration Link</label>
+                <input type="url" id="edit-evt-rsvp" name="rsvpLink" maxlength="500">
+            </div>
+            <div class="edit-form-footer">
+                <button type="submit" class="btn btn-blue">Save Changes</button>
+                <button type="button" class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+                <p id="edit-status" class="edit-status" aria-live="polite"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 // ─── CONFIGURE THIS AFTER RUNNING: sam deploy ────────────────────────────────
 const API_BASE = 'https://4ayg0m2fe8.execute-api.us-east-1.amazonaws.com/prod';
@@ -162,6 +214,8 @@ function fmtSubmitted(iso) {
 // Render
 // ------------------------------------------------------------------
 
+let cachedEvents = [];
+
 function buildAdminCard(e) {
     const isPending  = e.status === 'pending';
     const isApproved = e.status === 'approved';
@@ -189,12 +243,14 @@ function buildAdminCard(e) {
         </div>
         <div class="admin-event-actions">
             ${approveBtn}${unapproveBtn}${rejectBtn}${restoreBtn}
+            <button class="admin-btn admin-btn-edit" onclick="editEvent('${e.id}')">Edit</button>
             <button class="admin-btn admin-btn-delete" onclick="deleteEvent('${e.id}','${fmt(e.title)}')">Delete</button>
         </div>
     </div>`;
 }
 
 function renderGroups(events) {
+    cachedEvents = events;
     const pending  = events.filter(e => e.status === 'pending');
     const approved = events.filter(e => e.status === 'approved')
         .sort((a, b) => a.date.localeCompare(b.date));
@@ -260,6 +316,85 @@ async function deleteEvent(id, title) {
         showToast('Delete failed: ' + err.message, true);
     }
 }
+
+// ------------------------------------------------------------------
+// Edit event
+// ------------------------------------------------------------------
+
+function editEvent(id) {
+    const evt = cachedEvents.find(e => e.id === id);
+    if (!evt) { showToast('Event not found.', true); return; }
+
+    document.getElementById('edit-evt-id').value        = evt.id;
+    document.getElementById('edit-evt-title').value     = evt.title ?? '';
+    document.getElementById('edit-evt-date').value      = evt.date ?? '';
+    document.getElementById('edit-evt-time').value      = evt.time ?? '';
+    document.getElementById('edit-evt-location').value  = evt.location ?? '';
+    document.getElementById('edit-evt-address').value   = evt.address ?? '';
+    document.getElementById('edit-evt-desc').value      = evt.description ?? '';
+    document.getElementById('edit-evt-organizer').value = evt.organizer ?? '';
+    document.getElementById('edit-evt-email').value     = evt.contactEmail ?? '';
+    document.getElementById('edit-evt-rsvp').value      = evt.rsvpLink ?? '';
+    document.getElementById('edit-status').textContent  = '';
+    document.getElementById('edit-status').className    = 'edit-status';
+
+    document.getElementById('editEventModal').style.display = 'block';
+}
+
+function closeEditModal() {
+    document.getElementById('editEventModal').style.display = 'none';
+}
+
+document.getElementById('editEventModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('editEventModal')) closeEditModal();
+});
+
+document.getElementById('edit-event-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = document.getElementById('edit-evt-id').value;
+    const statusEl  = document.getElementById('edit-status');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+
+    const fields = {
+        title:        document.getElementById('edit-evt-title').value.trim(),
+        date:         document.getElementById('edit-evt-date').value,
+        time:         document.getElementById('edit-evt-time').value,
+        location:     document.getElementById('edit-evt-location').value.trim(),
+        address:      document.getElementById('edit-evt-address').value.trim(),
+        description:  document.getElementById('edit-evt-desc').value.trim(),
+        organizer:    document.getElementById('edit-evt-organizer').value.trim(),
+        contactEmail: document.getElementById('edit-evt-email').value.trim(),
+        rsvpLink:     document.getElementById('edit-evt-rsvp').value.trim(),
+    };
+
+    if (!fields.title || !fields.date || !fields.time || !fields.location || !fields.organizer || !fields.contactEmail) {
+        statusEl.textContent = 'Please fill in all required fields.';
+        statusEl.className = 'edit-status error';
+        return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Saving…';
+    statusEl.className = 'edit-status';
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/events/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Key': getKey() },
+            body: JSON.stringify(fields),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast('Event saved successfully.');
+        closeEditModal();
+        await loadAllEvents();
+    } catch (err) {
+        statusEl.textContent = 'Save failed: ' + err.message;
+        statusEl.className = 'edit-status error';
+    } finally {
+        submitBtn.disabled = false;
+        if (statusEl.textContent === 'Saving…') statusEl.textContent = '';
+    }
+});
 
 // ------------------------------------------------------------------
 // Boot

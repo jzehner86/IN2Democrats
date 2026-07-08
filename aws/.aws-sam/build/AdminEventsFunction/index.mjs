@@ -45,27 +45,61 @@ export const handler = async (event) => {
         }
     }
 
-    // PATCH /admin/events/{id} — approve or reject
+    // PATCH /admin/events/{id} — status update OR content edit
     if (method === 'PATCH' && id) {
         let body;
         try { body = JSON.parse(event.body ?? '{}'); } catch { return response(400, { error: 'Invalid JSON' }); }
 
-        const { status } = body;
-        if (!['approved', 'rejected'].includes(status)) {
-            return response(400, { error: 'status must be "approved" or "rejected"' });
+        // Status-only update (approve / reject)
+        if ('status' in body) {
+            const { status } = body;
+            if (!['approved', 'rejected'].includes(status)) {
+                return response(400, { error: 'status must be "approved" or "rejected"' });
+            }
+            try {
+                await dynamo.send(new UpdateCommand({
+                    TableName: process.env.TABLE_NAME,
+                    Key: { id },
+                    UpdateExpression: 'SET #s = :status, updatedAt = :now',
+                    ExpressionAttributeNames: { '#s': 'status' },
+                    ExpressionAttributeValues: { ':status': status, ':now': new Date().toISOString() },
+                }));
+                return response(200, { message: `Event ${status}` });
+            } catch (err) {
+                console.error('admin update error:', err);
+                return response(500, { error: 'Update failed' });
+            }
         }
+
+        // Content edit — update event fields
+        const EDITABLE = ['title', 'date', 'time', 'location', 'address', 'description', 'organizer', 'contactEmail', 'rsvpLink'];
+        const updates = EDITABLE.filter(f => f in body);
+        if (updates.length === 0) {
+            return response(400, { error: 'No updatable fields provided' });
+        }
+
+        const ExpressionAttributeNames = {};
+        const ExpressionAttributeValues = { ':now': new Date().toISOString() };
+        const setParts = ['updatedAt = :now'];
+
+        for (const field of updates) {
+            ExpressionAttributeNames[`#f_${field}`] = field;
+            ExpressionAttributeValues[`:v_${field}`] = body[field] ?? '';
+            setParts.push(`#f_${field} = :v_${field}`);
+        }
+
         try {
             await dynamo.send(new UpdateCommand({
                 TableName: process.env.TABLE_NAME,
                 Key: { id },
-                UpdateExpression: 'SET #s = :status, updatedAt = :now',
-                ExpressionAttributeNames: { '#s': 'status' },
-                ExpressionAttributeValues: { ':status': status, ':now': new Date().toISOString() },
+                UpdateExpression: `SET ${setParts.join(', ')}`,
+                ExpressionAttributeNames,
+                ExpressionAttributeValues,
             }));
-            return response(200, { message: `Event ${status}` });
+            return response(200, { message: 'Event updated' });
         } catch (err) {
-            console.error('admin update error:', err);
-            return response(500, { error: 'Update failed' });
+            console.error('admin edit error:', err);
+            return response(500, { error: 'Edit failed' });
         }
     }
 
