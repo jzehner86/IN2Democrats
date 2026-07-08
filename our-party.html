@@ -24,7 +24,6 @@
 </head>
 <body>
 
-    <!-- Nav injected by components.js -->
     <div id="site-header" data-page="party"></div>
 
     <section id="main-content" class="hero">
@@ -35,78 +34,145 @@
     <section class="counties-section">
         <div class="counties-grid">
 
-            <div class="county-card">
+            <button class="county-card" data-county="Cass County" data-blurb="Organizing in Logansport and surrounding townships to fight for working families.">
                 <h3>Cass County</h3>
                 <p>Organizing in Logansport and surrounding townships to fight for working families.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Elkhart County" data-blurb="Building the Democratic coalition in the RV capital of the world and across the county.">
                 <h3>Elkhart County</h3>
                 <p>Building the Democratic coalition in the RV capital of the world and across the county.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Fulton County" data-blurb="Working together to strengthen our local communities around Rochester.">
                 <h3>Fulton County</h3>
                 <p>Working together to strengthen our local communities around Rochester.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Kosciusko County" data-blurb="Advocating for smart, sustainable policies in Warsaw and neighboring towns.">
                 <h3>Kosciusko County</h3>
                 <p>Advocating for smart, sustainable policies in Warsaw and neighboring towns.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="LaPorte County" data-blurb="Representing the eastern townships of LaPorte County included in the 2nd District.">
                 <h3>LaPorte County</h3>
                 <p>Representing the eastern townships of LaPorte County included in the 2nd District.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Marshall County" data-blurb="Connecting with neighbors in Plymouth and organizing across Marshall County.">
                 <h3>Marshall County</h3>
                 <p>Connecting with neighbors in Plymouth and organizing across Marshall County.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Miami County" data-blurb="Fighting for rural communities, veterans, and local business owners in Peru and beyond.">
                 <h3>Miami County</h3>
                 <p>Fighting for rural communities, veterans, and local business owners in Peru and beyond.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Pulaski County" data-blurb="Organizing Winamac and the surrounding townships to build grassroots momentum.">
                 <h3>Pulaski County</h3>
                 <p>Organizing Winamac and the surrounding townships to build grassroots momentum.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="St. Joseph County" data-blurb="Driving Democratic turnout in South Bend, Mishawaka, and all surrounding townships.">
                 <h3>St. Joseph County</h3>
                 <p>Driving Democratic turnout in South Bend, Mishawaka, and all surrounding townships.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Starke County" data-blurb="Building community infrastructure and fighting for Hoosier values in Knox.">
                 <h3>Starke County</h3>
                 <p>Building community infrastructure and fighting for Hoosier values in Knox.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
-            <div class="county-card">
+            <button class="county-card" data-county="Wabash County" data-blurb="Standing up for public education and strong local economies across Wabash.">
                 <h3>Wabash County</h3>
                 <p>Standing up for public education and strong local economies across Wabash.</p>
-                <a href="#" class="btn btn-blue">Connect</a>
-            </div>
+                <span class="county-card-cta">Learn More</span>
+            </button>
 
         </div>
     </section>
 
-    <!-- Footer injected by components.js -->
+    <!-- County detail modal -->
+    <div id="countyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="county-modal-title">
+        <div class="modal-content county-modal-content">
+            <button class="close-btn" aria-label="Close">&times;</button>
+            <div class="county-modal-header">
+                <h2 id="county-modal-title"></h2>
+                <p id="county-modal-blurb" class="county-modal-blurb"></p>
+            </div>
+            <div class="county-modal-body">
+                <p class="county-info-soon">
+                    Detailed county information — including local leadership contacts, upcoming events, and ways to get involved — is coming soon.
+                </p>
+                <div class="county-info-placeholder" aria-hidden="true">
+                    <div class="county-placeholder-line"></div>
+                    <div class="county-placeholder-line short"></div>
+                    <div class="county-placeholder-line"></div>
+                    <div class="county-placeholder-line short"></div>
+                </div>
+            </div>
+            <div class="county-modal-footer">
+                <button class="btn btn-blue js-modal-open">Get Involved</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Network modal (opened by js-modal-open) -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" aria-label="Close">&times;</button>
+            <h2>Join The Team</h2>
+            <p>Sign up for updates and volunteer opportunities.</p>
+            <div id="can-form-area-join-the-movement-162" style="width:100%"></div>
+        </div>
+    </div>
+
     <div id="site-footer"></div>
 
     <script src="js/components.js"></script>
+    <script>
+    (function () {
+        const countyModal = document.getElementById('countyModal');
+        const titleEl     = document.getElementById('county-modal-title');
+        const blurbEl     = document.getElementById('county-modal-blurb');
+        const closeBtn    = countyModal.querySelector('.close-btn');
+
+        function openCountyModal(card) {
+            titleEl.textContent = card.dataset.county;
+            blurbEl.textContent = card.dataset.blurb;
+            countyModal.style.display = 'block';
+            closeBtn.focus();
+        }
+
+        function closeCountyModal() {
+            countyModal.style.display = 'none';
+        }
+
+        document.querySelectorAll('.county-card').forEach(card => {
+            card.addEventListener('click', () => openCountyModal(card));
+        });
+
+        closeBtn.addEventListener('click', closeCountyModal);
+
+        window.addEventListener('click', e => {
+            if (e.target === countyModal) closeCountyModal();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeCountyModal();
+        });
+    })();
+    </script>
 </body>
 </html>

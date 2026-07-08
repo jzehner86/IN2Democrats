@@ -34,23 +34,39 @@
     gap: 30px;
 }
 
+/* Reset <button> defaults, then apply card styles */
 .county-card {
+    /* button reset */
+    appearance: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+
+    /* card styles */
     background-color: var(--white);
     padding: 40px 30px;
     text-align: center;
     border-top: 6px solid var(--heartland-yellow);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
 }
 
 /* Rotating accent colours on the card tops */
 .county-card:nth-child(3n+2) { border-top-color: var(--strato-blue); }
 .county-card:nth-child(3n)   { border-top-color: var(--rust-belt); }
 
-.county-card:hover { transform: translateY(-5px); }
+.county-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+}
+
+.county-card:focus-visible {
+    outline: 3px solid var(--heartland-yellow);
+    outline-offset: 2px;
+}
 
 .county-card h3 { font-size: 1.8rem; margin-bottom: 15px; }
 
@@ -61,7 +77,87 @@
     margin-bottom: 20px;
 }
 
-.county-card .btn-blue { display: block; margin-top: 15px; }
+.county-card-cta {
+    display: inline-block;
+    margin-top: auto;
+    padding: 10px 24px;
+    background-color: var(--strato-blue);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
+.county-card:hover .county-card-cta {
+    background-color: var(--rust-belt);
+}
+
+/* ---- County Modal ---- */
+
+.county-modal-content {
+    max-width: 520px;
+}
+
+.county-modal-header {
+    border-bottom: 3px solid var(--heartland-yellow);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.county-modal-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.county-modal-blurb {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+}
+
+.county-modal-body {
+    margin-bottom: 1.75rem;
+}
+
+.county-info-soon {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+/* Skeleton placeholder lines */
+.county-info-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.county-placeholder-line {
+    height: 12px;
+    background: linear-gradient(90deg, #e8e8e8 25%, #f4f4f4 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+    border-radius: 4px;
+    animation: shimmer 1.6s infinite;
+}
+
+.county-placeholder-line.short { width: 60%; }
+
+@keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.county-modal-footer {
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding-top: 1.25rem;
+}
 
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
