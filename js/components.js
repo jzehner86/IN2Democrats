@@ -2,7 +2,7 @@
  * IN-02 DEMS — Shared Components
  *
  * Injects the site header (skip link + alert bar + nav) and footer into every page.
- * Each page marks its active nav link via:  <div id="site-header" data-page="rudy|party|action|events">
+ * Each page marks its active nav link via:  <div id="site-header" data-page="rudy|party|platform|action|events">
  *
  * Also initialises the mobile nav toggle and the modal (if present).
  * Any element with class "js-modal-open" will open the Action Network modal.
@@ -17,10 +17,11 @@
         'https://secure.actblue.com/donate/2nd-congressional-district-democrat-committee-1';
 
     const NAV_ITEMS = [
-        { id: 'rudy',   href: 'rudy-facts.html',  label: "Rudy's Record" },
-        { id: 'party',  href: 'our-party.html',    label: 'Our Party'     },
-        { id: 'action', href: 'index.html#action', label: 'Take Action'   },
-        { id: 'events', href: 'index.html#events', label: 'Events'        },
+        { id: 'rudy',     href: 'rudy-facts.html',  label: "Rudy's Record" },
+        { id: 'party',    href: 'our-party.html',    label: 'Our Party'     },
+        { id: 'platform', href: 'platform.html',     label: 'Platform'      },
+        { id: 'action',   href: 'index.html#action', label: 'Take Action'   },
+        { id: 'events',   href: 'index.html#events', label: 'Events'        },
     ];
 
     // ------------------------------------------------------------------
