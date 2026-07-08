@@ -4,350 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Party | IN-02 Democrats</title>
-    <!-- Approximations of Pete's typography: Oswald (Industrial), Inter (Aktiv Grotesk), Lora (Domaine Text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <style>
-        /* Pete for America Inspired Design System */
-        :root {
-            --strato-blue: #0A1C3B;
-            --heartland-yellow: #F6C039;
-            --rust-belt: #C64028;
-            --blue-sky: #6B94AA;
-            --calumet: #E2DCCF; /* Warm sand/grey */
-            --white: #FFFFFF;
-            
-            --font-head: 'Oswald', sans-serif;
-            --font-sans: 'Inter', sans-serif;
-            --font-serif: 'Lora', serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-serif);
-            color: var(--strato-blue);
-            background-color: var(--white);
-            line-height: 1.6;
-        }
-
-        h1, h2, h3, h4, h5 {
-            font-family: var(--font-head);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--strato-blue);
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--rust-belt);
-            font-family: var(--font-sans);
-            font-weight: 600;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            font-family: var(--font-sans);
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .btn-yellow {
-            background-color: var(--heartland-yellow);
-            color: var(--strato-blue);
-            border: 2px solid var(--heartland-yellow);
-        }
-
-        .btn-yellow:hover {
-            background-color: transparent;
-            color: var(--strato-blue);
-        }
-
-        .btn-blue {
-            background-color: var(--strato-blue);
-            color: var(--white);
-            border: 2px solid var(--strato-blue);
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .btn-blue:hover {
-            background-color: transparent;
-            color: var(--strato-blue);
-        }
-
-        /* Navigation */
-        header {
-            background-color: var(--calumet);
-            border-bottom: 4px solid var(--strato-blue);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
-
-        .logo h2 {
-            font-size: 2rem;
-            letter-spacing: 2px;
-            margin: 0;
-            line-height: 1;
-        }
-
-        .logo span {
-            color: var(--rust-belt);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .nav-links a.nav-item {
-            color: var(--strato-blue);
-            font-family: var(--font-sans);
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-links a.nav-item:hover {
-            color: var(--rust-belt);
-            text-decoration: underline;
-        }
-
-        /* Hero Section */
-        .hero {
-            background-color: var(--strato-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 100px 20px 100px 20px;
-            position: relative;
-        }
-
-        .hero h1 {
-            color: var(--white);
-            font-size: 4.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            color: var(--white);
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto;
-            font-family: var(--font-serif);
-        }
-
-        /* Counties Grid Section */
-        .counties-section {
-            background-color: var(--calumet);
-            padding: 80px 20px;
-        }
-
-        .counties-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .county-card {
-            background-color: var(--white);
-            padding: 40px 30px;
-            text-align: center;
-            border-top: 6px solid var(--heartland-yellow);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .county-card:nth-child(even) {
-            border-top: 6px solid var(--strato-blue);
-        }
-
-        .county-card:nth-child(3n) {
-            border-top: 6px solid var(--rust-belt);
-        }
-
-        .county-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .county-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: var(--strato-blue);
-        }
-
-        .county-card p {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--strato-blue);
-            color: var(--blue-sky);
-            text-align: center;
-            padding: 60px 20px;
-            font-family: var(--font-sans);
-        }
-
-        .disclaimer {
-            border: 2px solid var(--blue-sky);
-            display: inline-block;
-            padding: 20px 40px;
-            margin-bottom: 30px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--white);
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .hero h1 {
-                font-size: 3rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/our-party.css">
 </head>
 <body>
 
-    <!-- Header & Navigation -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <a href="index.html" style="color: inherit; text-decoration: none;">
-                    <h2>IN-02 <span>DEMS</span></h2>
-                </a>
-            </div>
-            <nav class="nav-links">
-                <a href="our-party.html" class="nav-item" style="color: var(--rust-belt); text-decoration: underline;">Our Party</a>
-                <a href="index.html#action" class="nav-item">Take Action</a>
-                <a href="index.html#events" class="nav-item">Events</a>
-                <a href="rudy-facts.html" class="nav-item">Rudy's Record</a>
-                <a href="https://secure.actblue.com" class="btn btn-yellow">Donate</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Nav injected by components.js -->
+    <div id="site-header" data-page="party"></div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <h1>Grassroots Power</h1>
         <p>The strength of our district comes from the ground up. The 2nd Congressional District spans 11 counties across Northern Indiana, and local Democrats are organizing in every single one of them.</p>
     </section>
 
-    <!-- Counties Grid -->
     <section class="counties-section">
         <div class="counties-grid">
-            
-            <!-- County Card -->
+
             <div class="county-card">
                 <h3>Cass County</h3>
                 <p>Organizing in Logansport and surrounding townships to fight for working families.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Elkhart County</h3>
                 <p>Building the Democratic coalition in the RV capital of the world and across the county.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Fulton County</h3>
                 <p>Working together to strengthen our local communities around Rochester.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Kosciusko County</h3>
                 <p>Advocating for smart, sustainable policies in Warsaw and neighboring towns.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>LaPorte County</h3>
                 <p>Representing the eastern townships of LaPorte County included in the 2nd District.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Marshall County</h3>
                 <p>Connecting with neighbors in Plymouth and organizing across Marshall County.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Miami County</h3>
                 <p>Fighting for rural communities, veterans, and local business owners in Peru and beyond.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Pulaski County</h3>
                 <p>Organizing Winamac and the surrounding townships to build grassroots momentum.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>St. Joseph County</h3>
                 <p>Driving Democratic turnout in South Bend, Mishawaka, and all surrounding townships.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Starke County</h3>
                 <p>Building community infrastructure and fighting for Hoosier values in Knox.</p>
                 <a href="#" class="btn btn-blue">Connect</a>
             </div>
 
-            <!-- County Card -->
             <div class="county-card">
                 <h3>Wabash County</h3>
                 <p>Standing up for public education and strong local economies across Wabash.</p>
@@ -357,13 +92,9 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="disclaimer">
-            Paid for by the Indiana 2nd Congressional District Democrats.<br>
-            Not authorized by any candidate or candidate's committee.
-        </div>
-    </footer>
+    <!-- Footer injected by components.js -->
+    <div id="site-footer"></div>
 
+    <script src="js/components.js"></script>
 </body>
 </html>
