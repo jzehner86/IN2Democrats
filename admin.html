@@ -59,6 +59,27 @@
         <div id="rejected-list"></div>
     </section>
 
+    <hr class="admin-divider">
+
+    <!-- News stories -->
+    <div class="admin-news-header">
+        <h2>News Stories</h2>
+        <button class="btn btn-blue" onclick="openNewsModal()" style="font-size:0.85rem;padding:0.5rem 1.1rem">+ Add Story</button>
+    </div>
+
+    <section class="admin-section">
+        <h3>
+            Published
+            <span id="published-news-count" class="count-badge approved">0</span>
+        </h3>
+        <div id="published-news-list"><p class="no-events">Loading…</p></div>
+    </section>
+
+    <section class="admin-section">
+        <h3>Drafts / Hidden</h3>
+        <div id="draft-news-list"><p class="no-events">Loading…</p></div>
+    </section>
+
 </div>
 
 <!-- Toast notification -->
@@ -111,6 +132,63 @@
                 <button type="submit" class="btn btn-blue">Save Changes</button>
                 <button type="button" class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
                 <p id="edit-status" class="edit-status" aria-live="polite"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add / Edit News modal -->
+<div id="newsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="news-modal-title">
+    <div class="modal-content admin-edit-modal-content">
+        <button class="close-btn" aria-label="Close" onclick="closeNewsModal()">&times;</button>
+        <h2 id="news-modal-title">Add Story</h2>
+        <form id="news-form" class="admin-edit-form" novalidate>
+            <input type="hidden" id="news-id">
+            <div class="field-full">
+                <label for="news-title">Headline <span aria-hidden="true">*</span></label>
+                <input type="text" id="news-title" required maxlength="300" placeholder="Article headline">
+            </div>
+            <div class="field-full">
+                <label for="news-url">Article URL <span aria-hidden="true">*</span></label>
+                <input type="url" id="news-url" required maxlength="500" placeholder="https://…">
+            </div>
+            <div>
+                <label for="news-source">Publication <span aria-hidden="true">*</span></label>
+                <input type="text" id="news-source" required maxlength="100" placeholder="e.g. South Bend Tribune">
+            </div>
+            <div>
+                <label for="news-date">Published Date <span aria-hidden="true">*</span></label>
+                <input type="date" id="news-date" required>
+            </div>
+            <div>
+                <label for="news-category">Category <span aria-hidden="true">*</span></label>
+                <input type="text" id="news-category" required maxlength="50" list="category-options" placeholder="e.g. Local Politics">
+                <datalist id="category-options">
+                    <option value="Local Politics">
+                    <option value="Economy">
+                    <option value="Healthcare">
+                    <option value="Education">
+                    <option value="Environment">
+                    <option value="Voting Rights">
+                    <option value="Opinion">
+                    <option value="Press Release">
+                </datalist>
+            </div>
+            <div>
+                <label for="news-status">Status <span aria-hidden="true">*</span></label>
+                <select id="news-status">
+                    <option value="published">Published (visible on site)</option>
+                    <option value="draft">Draft (hidden)</option>
+                </select>
+            </div>
+            <div class="field-full">
+                <label for="news-excerpt">Excerpt <span aria-hidden="true">*</span></label>
+                <textarea id="news-excerpt" required maxlength="500" rows="3" placeholder="1–2 sentences summarizing why this story matters to the 2nd District…"></textarea>
+            </div>
+            <div class="edit-form-footer">
+                <button type="submit" class="btn btn-blue">Save Story</button>
+                <button type="button" class="btn btn-outline" onclick="closeNewsModal()">Cancel</button>
+                <p id="news-status-msg" class="edit-status" aria-live="polite"></p>
             </div>
         </form>
     </div>
@@ -188,7 +266,10 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     document.getElementById('admin-key-input').value = '';
 });
 
-document.getElementById('refresh-btn').addEventListener('click', loadAllEvents);
+document.getElementById('refresh-btn').addEventListener('click', () => {
+    loadAllEvents();
+    loadAllNews();
+});
 
 // ------------------------------------------------------------------
 // Formatting helpers
@@ -397,6 +478,182 @@ document.getElementById('edit-event-form').addEventListener('submit', async e =>
 });
 
 // ------------------------------------------------------------------
+// News management
+// ------------------------------------------------------------------
+
+let cachedNews = [];
+
+function buildNewsAdminCard(n) {
+    const isPublished = n.status === 'published';
+    const toggleBtn = isPublished
+        ? `<button class="admin-btn admin-btn-reject" onclick="toggleNewsStatus('${n.id}','draft')">Unpublish</button>`
+        : `<button class="admin-btn admin-btn-approve" onclick="toggleNewsStatus('${n.id}','published')">Publish</button>`;
+
+    return `
+    <div class="admin-event" data-id="${n.id}">
+        <div class="admin-event-info">
+            <span class="news-category-badge">${fmt(n.category)}</span>
+            <h3>${fmt(n.title)}</h3>
+            <p class="admin-event-meta"><strong>${fmt(n.source)}</strong> &middot; ${fmt(n.publishedDate)}</p>
+            <p class="admin-event-description">${fmt(n.excerpt)}</p>
+            <p class="admin-event-meta" style="margin-top:0.4rem">
+                <a href="${fmt(n.url)}" target="_blank" rel="noopener">View article ↗</a>
+            </p>
+        </div>
+        <div class="admin-event-actions">
+            <button class="admin-btn admin-btn-edit" onclick="openNewsModal('${n.id}')">Edit</button>
+            ${toggleBtn}
+            <button class="admin-btn admin-btn-delete" onclick="deleteNewsItem('${n.id}','${fmt(n.title)}')">Delete</button>
+        </div>
+    </div>`;
+}
+
+function renderNewsGroups(items) {
+    cachedNews = items;
+    const published = items.filter(n => n.status === 'published')
+        .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate));
+    const drafts = items.filter(n => n.status !== 'published')
+        .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate));
+
+    document.getElementById('published-news-count').textContent = published.length;
+
+    const pubEl = document.getElementById('published-news-list');
+    pubEl.innerHTML = published.length
+        ? published.map(buildNewsAdminCard).join('')
+        : '<p class="no-events">No published stories.</p>';
+
+    const draftEl = document.getElementById('draft-news-list');
+    draftEl.innerHTML = drafts.length
+        ? drafts.map(buildNewsAdminCard).join('')
+        : '<p class="no-events">None.</p>';
+}
+
+async function loadAllNews() {
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/news`, { headers: { 'X-Admin-Key': key } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        renderNewsGroups(await res.json());
+    } catch (err) {
+        showToast('Failed to load news: ' + err.message, true);
+    }
+}
+
+function openNewsModal(id) {
+    const isEdit = !!id;
+    document.getElementById('news-modal-title').textContent = isEdit ? 'Edit Story' : 'Add Story';
+    document.getElementById('news-id').value = id || '';
+    document.getElementById('news-status-msg').textContent = '';
+    document.getElementById('news-status-msg').className = 'edit-status';
+
+    if (isEdit) {
+        const n = cachedNews.find(x => x.id === id);
+        if (!n) { showToast('Story not found.', true); return; }
+        document.getElementById('news-title').value    = n.title ?? '';
+        document.getElementById('news-url').value      = n.url ?? '';
+        document.getElementById('news-source').value   = n.source ?? '';
+        document.getElementById('news-date').value     = n.publishedDate ?? '';
+        document.getElementById('news-category').value = n.category ?? '';
+        document.getElementById('news-excerpt').value  = n.excerpt ?? '';
+        document.getElementById('news-status').value   = n.status ?? 'published';
+    } else {
+        document.getElementById('news-form').reset();
+        document.getElementById('news-status').value = 'published';
+    }
+
+    document.getElementById('newsModal').style.display = 'block';
+}
+
+function closeNewsModal() {
+    document.getElementById('newsModal').style.display = 'none';
+}
+
+document.getElementById('newsModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('newsModal')) closeNewsModal();
+});
+
+document.getElementById('news-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = document.getElementById('news-id').value;
+    const isEdit = !!id;
+    const statusEl  = document.getElementById('news-status-msg');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+
+    const fields = {
+        title:         document.getElementById('news-title').value.trim(),
+        url:           document.getElementById('news-url').value.trim(),
+        source:        document.getElementById('news-source').value.trim(),
+        publishedDate: document.getElementById('news-date').value,
+        category:      document.getElementById('news-category').value.trim(),
+        excerpt:       document.getElementById('news-excerpt').value.trim(),
+        status:        document.getElementById('news-status').value,
+    };
+
+    if (!fields.title || !fields.url || !fields.source || !fields.publishedDate || !fields.category || !fields.excerpt) {
+        statusEl.textContent = 'Please fill in all required fields.';
+        statusEl.className = 'edit-status error';
+        return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Saving…';
+    statusEl.className = 'edit-status';
+
+    try {
+        const res = await fetch(
+            isEdit ? `${API_BASE}/admin/news/${id}` : `${API_BASE}/admin/news`,
+            {
+                method: isEdit ? 'PATCH' : 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Admin-Key': getKey() },
+                body: JSON.stringify(fields),
+            }
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast(isEdit ? 'Story updated.' : 'Story added.');
+        closeNewsModal();
+        await loadAllNews();
+    } catch (err) {
+        statusEl.textContent = 'Save failed: ' + err.message;
+        statusEl.className = 'edit-status error';
+    } finally {
+        submitBtn.disabled = false;
+        if (statusEl.textContent === 'Saving…') statusEl.textContent = '';
+    }
+});
+
+async function toggleNewsStatus(id, status) {
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/news/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+            body: JSON.stringify({ status }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast(status === 'published' ? 'Story published.' : 'Story unpublished.');
+        await loadAllNews();
+    } catch (err) {
+        showToast('Update failed: ' + err.message, true);
+    }
+}
+
+async function deleteNewsItem(id, title) {
+    if (!confirm(`Delete "${title}"?\n\nThis cannot be undone.`)) return;
+    const key = getKey();
+    try {
+        const res = await fetch(`${API_BASE}/admin/news/${id}`, {
+            method: 'DELETE',
+            headers: { 'X-Admin-Key': key },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast('Story deleted.');
+        await loadAllNews();
+    } catch (err) {
+        showToast('Delete failed: ' + err.message, true);
+    }
+}
+
+// ------------------------------------------------------------------
 // Boot
 // ------------------------------------------------------------------
 
@@ -404,6 +661,7 @@ function showDashboard() {
     document.getElementById('auth-gate').hidden = true;
     document.getElementById('admin-dashboard').hidden = false;
     loadAllEvents();
+    loadAllNews();
 }
 
 // Auto-login if key is already in session storage

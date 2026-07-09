@@ -27,4 +27,22 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["AdminEventsFunction"]
 
+[function_build_definitions.d4bfbac7-c000-4536-9579-936db322e074]
+codeuri = "C:\\Users\\joshy\\code\\IN2Democrats\\aws\\functions\\get-news"
+runtime = "nodejs20.x"
+architecture = "x86_64"
+handler = "index.handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetNewsFunction"]
+
+[function_build_definitions.595f209a-f84d-4479-9cd3-8dbbbeff5628]
+codeuri = "C:\\Users\\joshy\\code\\IN2Democrats\\aws\\functions\\admin-news"
+runtime = "nodejs20.x"
+architecture = "x86_64"
+handler = "index.handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["AdminNewsFunction"]
+
 [layer_build_definitions]

@@ -14,6 +14,20 @@
  */
 
 (function () {
+    // ── Google Analytics 4 ───────────────────────────────────────
+    // Replace the ID below with your Measurement ID from:
+    // analytics.google.com → Admin → Data Streams → your stream → Measurement ID
+    const GA_ID = 'G-3CD8CKKJ78';
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+    // ─────────────────────────────────────────────────────────────
+
     const ACTBLUE_URL =
         'https://secure.actblue.com/donate/2nd-congressional-district-democrat-committee-1';
 
@@ -21,7 +35,7 @@
         { id: 'rudy',     href: 'rudy-facts.html',  label: "Rudy's Record" },
         { id: 'party',    href: 'our-party.html',    label: 'Our Party'     },
         { id: 'platform', href: 'platform.html',     label: 'Platform'      },
-        { id: 'events',   href: 'events.html',        label: 'Events'        },
+        { id: 'events',   href: 'events.html',        label: 'News & Events' },
     ];
 
     // ------------------------------------------------------------------
@@ -234,5 +248,10 @@
     }
 
     initModal();
+
+    // Inject analytics tracking (after all components are rendered)
+    const analyticsScript = document.createElement('script');
+    analyticsScript.src = 'js/analytics.js';
+    document.body.appendChild(analyticsScript);
 
 })();

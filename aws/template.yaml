@@ -110,10 +110,89 @@ Resources:
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
 
+  # ── News resources ──────────────────────────────────────────────
+
+  NewsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: in02-news
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  GetNewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: in02-get-news
+      CodeUri: functions/get-news/
+      Handler: index.handler
+      Description: Returns all published news items sorted by date
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref NewsTable
+      Events:
+        GetNews:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsApi
+            Path: /news
+            Method: GET
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref NewsTable
+
+  AdminNewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: in02-admin-news
+      CodeUri: functions/admin-news/
+      Handler: index.handler
+      Description: Admin CRUD for curated news items
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref NewsTable
+      Events:
+        AdminNewsList:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsApi
+            Path: /admin/news
+            Method: GET
+        AdminNewsCreate:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsApi
+            Path: /admin/news
+            Method: POST
+        AdminNewsUpdate:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsApi
+            Path: /admin/news/{id}
+            Method: PATCH
+        AdminNewsDelete:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsApi
+            Path: /admin/news/{id}
+            Method: DELETE
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref NewsTable
+
 Outputs:
   ApiUrl:
     Description: API Gateway endpoint — paste this into js/events.js as API_BASE
     Value: !Sub "https://${EventsApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
   TableName:
-    Description: DynamoDB table name
+    Description: DynamoDB events table name
     Value: !Ref EventsTable
+  NewsTableName:
+    Description: DynamoDB news table name
+    Value: !Ref NewsTable

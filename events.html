@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Events | IN-02 Democrats</title>
+    <title>News &amp; Events | IN-02 Democrats</title>
 
     <!-- SEO -->
-    <meta name="description" content="Upcoming events across Indiana's 2nd Congressional District — town halls, organizing meetings, canvasses, and more.">
+    <meta name="description" content="The latest news and upcoming events across Indiana's 2nd Congressional District — stay informed and get involved.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://YOUR_DOMAIN/events.html">
-    <meta property="og:title" content="Community Events | IN-02 Democrats">
-    <meta property="og:description" content="Find and attend Democratic events happening across all 11 counties of Indiana's 2nd Congressional District.">
+    <meta property="og:title" content="News &amp; Events | IN-02 Democrats">
+    <meta property="og:description" content="Stay up to date with the latest news and find Democratic events happening across all 11 counties of Indiana's 2nd Congressional District.">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Community Events | IN-02 Democrats">
-    <meta name="twitter:description" content="Upcoming events across Indiana's 2nd Congressional District.">
+    <meta name="twitter:title" content="News &amp; Events | IN-02 Democrats">
+    <meta name="twitter:description" content="The latest news and upcoming events across Indiana's 2nd Congressional District.">
 
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,12 +27,45 @@
     <div id="site-header" data-page="events"></div>
 
     <section id="main-content" class="events-hero">
-        <h1>Community Events</h1>
-        <p>Town halls, canvasses, organizing meetings, and more — happening across all 11 counties of Indiana's 2nd District.</p>
+        <h1>News &amp; Events</h1>
+        <p>Stay informed on the issues that matter to Indiana's 2nd District — and find ways to get involved in your community.</p>
+        <nav class="events-hero-nav" aria-label="Page sections">
+            <a href="#news">Latest News</a>
+            <a href="#events">Upcoming Events</a>
+        </nav>
     </section>
 
-    <section class="events-page-section">
+    <!-- ═══════════════════════════════════════════════════════════════
+         NEWS SECTION
+         To add a story: duplicate one <article> block and update the
+         href, category badge, headline, source, date, and excerpt.
+         To remove a story: delete the entire <article> block.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="news" class="news-page-section">
+        <div class="news-page-wrap">
+
+            <div class="news-section-header">
+                <h2>In The News</h2>
+                <p>A curated look at stories affecting the 2nd District and Indiana Democrats.</p>
+            </div>
+
+            <!-- News cards — populated by js/events.js -->
+            <div id="news-list" class="news-grid">
+                <p class="events-empty" style="grid-column:1/-1">Loading news…</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         EVENTS SECTION
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="events" class="events-page-section">
         <div class="events-page-wrap">
+
+            <div class="news-section-header">
+                <h2>Upcoming Events</h2>
+                <p>Town halls, canvasses, organizing meetings, and more — happening across all 11 counties of the 2nd District.</p>
+            </div>
 
             <!-- Events list — populated by js/events.js -->
             <div id="events-list" class="events-list">

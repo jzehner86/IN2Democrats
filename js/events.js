@@ -164,8 +164,58 @@ function initSubmitForm() {
 }
 
 // ------------------------------------------------------------------
+// News list
+// ------------------------------------------------------------------
+
+function formatNewsDate(dateStr) {
+    return new Date(`${dateStr}T12:00:00`).toLocaleDateString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric',
+    });
+}
+
+function buildNewsCard(n) {
+    return `
+    <article class="news-card">
+        <div class="news-card-body">
+            <span class="news-category">${escapeHtml(n.category)}</span>
+            <h3 class="news-headline">
+                <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener">${escapeHtml(n.title)}</a>
+            </h3>
+            <p class="news-meta">
+                <span class="news-source">${escapeHtml(n.source)}</span>
+                &middot;
+                <time datetime="${escapeHtml(n.publishedDate)}">${formatNewsDate(n.publishedDate)}</time>
+            </p>
+            <p class="news-excerpt">${escapeHtml(n.excerpt)}</p>
+        </div>
+        <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener" class="news-read-more">Read Full Story →</a>
+    </article>`;
+}
+
+async function loadNews() {
+    const container = document.getElementById('news-list');
+    if (!container) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/news`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const items = await res.json();
+
+        if (!items.length) {
+            container.innerHTML = '<p class="events-empty" style="grid-column:1/-1">No news stories available. Check back soon.</p>';
+        } else {
+            container.innerHTML = items.map(buildNewsCard).join('');
+        }
+    } catch (err) {
+        console.error('news load error:', err);
+        container.innerHTML = '<p class="events-empty" style="grid-column:1/-1">Unable to load news right now. Please try again later.</p>';
+    }
+}
+
+// ------------------------------------------------------------------
 // Boot — runs after DOM is ready (script loaded at bottom of <body>)
 // ------------------------------------------------------------------
 
 loadEvents();
+loadNews();
 initSubmitForm();

@@ -34,7 +34,12 @@
     gap: 30px;
 }
 
-/* Reset <button> defaults, then apply card styles */
+/* Reset <button> and <a> defaults, then apply card styles */
+a.county-card {
+    text-decoration: none;
+    color: inherit;
+}
+
 .county-card {
     /* button reset */
     appearance: none;
@@ -172,6 +177,8 @@
     color: var(--rust-belt);
     font-weight: 600;
     text-decoration: none;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .county-detail-value a:hover {
@@ -186,4 +193,29 @@
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
     .hero h1 { font-size: 3rem; }
+}
+
+@media (max-width: 520px) {
+    /* Stack label above value instead of side-by-side */
+    .county-detail-row {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+        padding: 0.75rem 0;
+    }
+
+    .county-detail-label {
+        padding-top: 0;
+    }
+
+    /* Tighten modal padding on small screens */
+    .county-modal-content {
+        padding: 24px 18px;
+    }
+
+    /* Full-width footer button */
+    .county-modal-footer .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
 }
