@@ -10,6 +10,7 @@
  * NOTE: This script must be loaded at the bottom of <body> (no defer/async needed).
  * The DOM is fully parsed by the time a bottom-of-body script runs, so we skip
  * DOMContentLoaded entirely — that removes one event-loop tick of lag.
+ * Adding comment
  */
 
 (function () {
