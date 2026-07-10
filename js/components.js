@@ -137,7 +137,7 @@
             <h3>9. Contact Us</h3>
             <p>If you have questions about this privacy policy or our data practices, please contact us at:<br>
             <strong>Indiana 2nd Congressional District Democratic Committee</strong><br>
-            Indiana, United States</p>
+            PO Box 05414<br>Elkhart, IN 46516</p>
         </div>
     </div>
 </div>`;

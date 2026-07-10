@@ -68,14 +68,16 @@ function buildEventCard(e) {
     </article>`;
 }
 
-async function loadEvents() {
+async function loadEvents(limit) {
     const container = document.getElementById('events-list');
     if (!container) return;
 
     try {
         const res = await fetch(`${API_BASE}/events`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const events = await res.json();
+        let events = await res.json();
+
+        if (limit) events = events.slice(0, limit);
 
         if (!events.length) {
             container.innerHTML = '<p class="events-empty">No upcoming events scheduled. Check back soon or sign up below for alerts.</p>';
@@ -216,6 +218,6 @@ async function loadNews() {
 // Boot — runs after DOM is ready (script loaded at bottom of <body>)
 // ------------------------------------------------------------------
 
-loadEvents();
+loadEvents(document.getElementById('news-list') ? undefined : 5);
 loadNews();
 initSubmitForm();
