@@ -48,7 +48,7 @@
         ).join('\n            ');
 
         return `<a class="skip-link" href="#main-content">Skip to main content</a>
-<div class="top-bar">Chip in $25 to help elect Indiana 2nd District Democrats</div>
+<a href="https://secure.actblue.com/donate/cd2tshirts" target="_blank" rel="noopener" class="top-bar">Chip in $30 to help elect Indiana Democrats and get a free t-shirt →</a>
 <header>
     <div class="nav-container">
         <div class="logo">

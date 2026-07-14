@@ -109,6 +109,7 @@ a {
 
 /* ---- Top Alert Bar ---- */
 .top-bar {
+    display: block;
     background-color: var(--rust-belt);
     color: var(--white);
     text-align: center;
@@ -118,6 +119,11 @@ a {
     font-weight: 800;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+a.top-bar:hover {
+    background-color: #a0241e;
 }
 
 /* ---- Navigation ---- */
