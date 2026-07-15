@@ -55,6 +55,9 @@ Resources:
       CodeUri: functions/submit-event/
       Handler: index.handler
       Description: Accepts public event submissions and saves them as pending
+      Environment:
+        Variables:
+          ALERT_TOPIC_ARN: !Ref EventAlertTopic
       Events:
         SubmitEvent:
           Type: Api
@@ -65,6 +68,8 @@ Resources:
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref EventsTable
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt EventAlertTopic.TopicName
 
   AdminEventsFunction:
     Type: AWS::Serverless::Function
@@ -95,6 +100,11 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref EventsTable
+
+  EventAlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: in02-event-alerts
 
   EventsTable:
     Type: AWS::DynamoDB::Table
@@ -196,3 +206,6 @@ Outputs:
   NewsTableName:
     Description: DynamoDB news table name
     Value: !Ref NewsTable
+  EventAlertTopicArn:
+    Description: SNS topic ARN — subscribe an email address to receive event submission alerts
+    Value: !Ref EventAlertTopic
