@@ -74,7 +74,7 @@
     <div class="footer-links">
         <a href="index.html">Home</a>
         <button class="footer-link-btn" id="privacy-policy-link">Privacy Policy</button>
-        <a href="mailto:info@cd2indems.org">Contact</a>
+        <button class="footer-link-btn" id="contact-link">Contact</button>
     </div>
 </footer>
 <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
@@ -138,6 +138,23 @@
             <p>If you have questions about this privacy policy or our data practices, please contact us at:<br>
             <strong>Indiana 2nd Congressional District Democratic Committee</strong><br>
             PO Box 05414<br>Elkhart, IN 46516</p>
+        </div>
+    </div>
+</div>
+<div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <div class="modal-content contact-modal-content">
+        <button class="close-btn" aria-label="Close">&times;</button>
+        <h2 id="contact-modal-title">Contact Us</h2>
+        <p>Have a question or want to get involved? Reach out — we'd love to hear from you.</p>
+        <div class="contact-body">
+            <div class="contact-row">
+                <span class="contact-label">Email</span>
+                <a href="mailto:info@cd2indems.org" class="contact-value">info@cd2indems.org</a>
+            </div>
+            <div class="contact-row">
+                <span class="contact-label">Mailing Address</span>
+                <span class="contact-value">Indiana 2nd Congressional District Democratic Committee<br>PO Box 05414<br>Elkhart, IN 46516</span>
+            </div>
         </div>
     </div>
 </div>`;
@@ -209,6 +226,18 @@
         });
     }
 
+    function initContactModal() {
+        const modal    = document.getElementById('contactModal');
+        const openBtn  = document.getElementById('contact-link');
+        const closeBtn = modal?.querySelector('.close-btn');
+        if (!modal || !openBtn) return;
+
+        openBtn.addEventListener('click', () => { modal.style.display = 'block'; });
+        closeBtn?.addEventListener('click', () => { modal.style.display = 'none'; });
+        window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.style.display = 'none'; });
+    }
+
     function initPrivacyModal() {
         const modal    = document.getElementById('privacyModal');
         const openBtn  = document.getElementById('privacy-policy-link');
@@ -245,6 +274,7 @@
     if (footerPlaceholder) {
         replaceElement(footerPlaceholder, buildFooter());
         initPrivacyModal();
+        initContactModal();
     }
 
     initModal();

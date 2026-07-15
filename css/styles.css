@@ -433,6 +433,65 @@ footer {
     margin-bottom: 0.35rem;
 }
 
+/* ---- Contact Modal ---- */
+.contact-modal-content {
+    max-width: 480px;
+}
+
+.contact-modal-content h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-modal-content > p {
+    font-size: 0.92rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.contact-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.contact-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contact-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--heartland-yellow);
+    background: var(--strato-blue);
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    width: fit-content;
+}
+
+.contact-value {
+    font-family: var(--font-sans);
+    font-size: 0.97rem;
+    color: var(--strato-blue);
+    line-height: 1.6;
+}
+
+a.contact-value {
+    color: var(--rust-belt);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a.contact-value:hover {
+    text-decoration: underline;
+}
+
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
     .nav-toggle {
