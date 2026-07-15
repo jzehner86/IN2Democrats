@@ -1,6 +1,9 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import { randomUUID } from 'crypto';
+
+const sns = new SNSClient({});
 
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
@@ -67,6 +70,28 @@ export const handler = async (event) => {
     };
 
     await dynamo.send(new PutCommand({ TableName: process.env.TABLE_NAME, Item: item }));
+
+    // Alert — fire-and-forget so an SNS failure never blocks the submission response
+    if (process.env.ALERT_TOPIC_ARN) {
+        const alertMessage = [
+            `New event submission pending review.`,
+            ``,
+            `Title:     ${item.title}`,
+            `Date:      ${item.date} at ${item.time}`,
+            `Location:  ${item.location}`,
+            `Organizer: ${item.organizer}`,
+            `Contact:   ${item.contactEmail}`,
+            item.description ? `\nDescription: ${item.description}` : '',
+            ``,
+            `Review it at: https://www.cd2indems.org/admin.html`,
+        ].join('\n');
+
+        sns.send(new PublishCommand({
+            TopicArn: process.env.ALERT_TOPIC_ARN,
+            Subject:  `[IN-02 Dems] New Event Submission: ${item.title}`,
+            Message:  alertMessage,
+        })).catch(err => console.error('SNS alert failed:', err));
+    }
 
     return {
         statusCode: 201,
