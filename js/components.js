@@ -74,7 +74,7 @@
     <div class="footer-links">
         <a href="index.html">Home</a>
         <button class="footer-link-btn" id="privacy-policy-link">Privacy Policy</button>
-        <a href="#">Contact</a>
+        <a href="mailto:info@cd2indems.org">Contact</a>
     </div>
 </footer>
 <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
